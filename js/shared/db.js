@@ -1,100 +1,78 @@
 /* ═══════════════════════════════════════════════════════════════
-   Fercayo · Camada IndexedDB Partilhada
+   Fercayo · Camada Firebase Firestore Partilhada
    Usado por: checklist.html, levantamento.html
    ═══════════════════════════════════════════════════════════════ */
 
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAJtJFh7ZpMKZxzfouj3EUvcacfh5LT0Cs",
+  authDomain:        "fercayo-app.firebaseapp.com",
+  projectId:         "fercayo-app",
+  storageBucket:     "fercayo-app.firebasestorage.app",
+  messagingSenderId: "1049622307379",
+  appId:             "1:1049622307379:web:56ec6544e4fea254dff946"
+};
+
+/** Inicializa o Firebase e devolve a instância Firestore (substitui abrirDB). */
+function abrirDB() {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(FIREBASE_CONFIG);
+  }
+  return Promise.resolve(firebase.firestore());
+}
+
+/** Lê todos os documentos de uma coleção. */
+function dbLerTudo(db, colecao) {
+  return db.collection(colecao).get()
+    .then(snap => snap.docs.map(d => d.data()));
+}
+
 /**
- * Abre (ou cria) uma base de dados IndexedDB.
- * @param {string} nome    - Nome da base de dados
- * @param {number} versao  - Versão do schema
- * @param {function} onUpgrade - Callback para onupgradeneeded(db)
- * @returns {Promise<IDBDatabase>}
+ * Escreve (set) um documento.
+ * Se dados.id existir usa-o como ID do documento;
+ * caso contrário gera um ID automático e guarda-o em dados.id.
  */
-function abrirDB(nome, versao, onUpgrade) {
-  return new Promise((resolve, reject) => {
-    const pedido = indexedDB.open(nome, versao);
-    pedido.onupgradeneeded = (evento) => {
-      onUpgrade(evento.target.result);
-    };
-    pedido.onsuccess = (e) => resolve(e.target.result);
-    pedido.onerror   = ()  => reject(pedido.error);
-  });
+function dbEscrever(db, colecao, dados) {
+  const id = (dados.id !== undefined && dados.id !== null)
+    ? String(dados.id)
+    : null;
+
+  if (id) {
+    return db.collection(colecao).doc(id).set(dados).then(() => id);
+  } else {
+    const ref = db.collection(colecao).doc();
+    return ref.set({ ...dados, id: ref.id }).then(() => ref.id);
+  }
 }
 
-/** Lê todos os registos de uma tabela. */
-function dbLerTudo(db, tabela) {
-  return new Promise((resolve, reject) => {
-    const req = db.transaction(tabela, 'readonly').objectStore(tabela).getAll();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror   = () => reject(req.error);
-  });
+/** Apaga um documento por ID. */
+function dbApagar(db, colecao, id) {
+  return db.collection(colecao).doc(String(id)).delete();
 }
 
-/** Escreve (put) um registo numa tabela. */
-function dbEscrever(db, tabela, dados) {
-  return new Promise((resolve, reject) => {
-    const req = db.transaction(tabela, 'readwrite').objectStore(tabela).put(dados);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror   = () => reject(req.error);
-  });
+/** Lê documentos filtrados por campo = valor. */
+function dbLerPorIndice(db, colecao, campo, valor) {
+  return db.collection(colecao).where(campo, '==', valor).get()
+    .then(snap => snap.docs.map(d => d.data()));
 }
 
-/** Apaga um registo por ID. */
-function dbApagar(db, tabela, id) {
-  return new Promise((resolve, reject) => {
-    const req = db.transaction(tabela, 'readwrite').objectStore(tabela).delete(id);
-    req.onsuccess = () => resolve();
-    req.onerror   = () => reject(req.error);
-  });
+/* As funções abaixo mantêm compatibilidade com código existente. */
+function dbPut(db, colecao, key, val) {
+  return dbEscrever(db, colecao, key ? { ...val, id: key } : val);
 }
 
-/** Lê registos por índice. */
-function dbLerPorIndice(db, tabela, indice, valor) {
-  return new Promise((resolve, reject) => {
-    const req = db.transaction(tabela, 'readonly')
-      .objectStore(tabela).index(indice).getAll(valor);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror   = () => reject(req.error);
-  });
+function dbGet(db, colecao, key) {
+  return db.collection(colecao).doc(String(key)).get()
+    .then(d => d.exists ? d.data() : undefined);
 }
 
-/** Put genérico (para stores com ou sem keyPath). */
-function dbPut(db, store, key, val) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    const s  = tx.objectStore(store);
-    const r  = (key === null) ? s.put(val) : s.put(val, key);
-    r.onsuccess = () => resolve();
-    r.onerror   = (e) => reject(e);
-  });
+function dbGetAll(db, colecao) {
+  return dbLerTudo(db, colecao);
 }
 
-/** Get genérico por chave. */
-function dbGet(db, store, key) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const r  = tx.objectStore(store).get(key);
-    r.onsuccess = (e) => resolve(e.target.result);
-    r.onerror   = (e) => reject(e);
-  });
-}
-
-/** Lê todos os registos de uma store. */
-function dbGetAll(db, store) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const r  = tx.objectStore(store).getAll();
-    r.onsuccess = (e) => resolve(e.target.result);
-    r.onerror   = (e) => reject(e);
-  });
-}
-
-/** Limpa todos os registos de uma store. */
-function dbClear(db, store) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    const r  = tx.objectStore(store).clear();
-    r.onsuccess = () => resolve();
-    r.onerror   = (e) => reject(e);
+function dbClear(db, colecao) {
+  return db.collection(colecao).get().then(snap => {
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.delete(d.ref));
+    return batch.commit();
   });
 }

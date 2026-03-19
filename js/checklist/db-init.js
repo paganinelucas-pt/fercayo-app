@@ -5,15 +5,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 async function iniciar() {
-  db = await abrirDB(NOME_DB, VERSAO_DB, (bd) => {
-    if (!bd.objectStoreNames.contains('obras')) {
-      bd.createObjectStore('obras', { keyPath: 'id' });
-    }
-    if (!bd.objectStoreNames.contains('itens')) {
-      const store = bd.createObjectStore('itens', { keyPath: 'id', autoIncrement: true });
-      store.createIndex('obraId', 'obraId', { unique: false });
-    }
-  });
+  db = await abrirDB();
 
   const obrasExistentes = await dbLerTudo(db, 'obras');
   if (obrasExistentes.length === 0) {

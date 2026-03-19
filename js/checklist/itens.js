@@ -25,7 +25,7 @@ function renderizarItens() {
   }
   el.innerHTML = itensFiltrados.map(item => `
     <div class="item-row s-${item.estado} ${itemAtual?.id === item.id ? 'selected' : ''}"
-         onclick="selecionarItem(${item.id})">
+         onclick="selecionarItem('${item.id}')">
       <div class="item-art">${item.artigo || '⚠ Extra'}</div>
       <div class="item-nm">${item.descricao || item.nome || '—'}</div>
       <div class="item-meta">${[item.tipo, item.dims].filter(Boolean).join(' · ')}</div>
