@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(netlify link:*)",
+      "Bash(netlify unlink:*)"
+    ]
+  }
+}
