@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fercayo · Checklist ORC</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/checklist.css">
+</head>
+<body>
+
+  <div id="topbar">
+    <div class="logo">
+      <img class="logo-icon" src="assets/logo.svg" alt="Fercayo">
+      <div>
+        <div class="logo-text">FERCAYO</div>
+        <div class="logo-sub">CARPINTARIAS</div>
+      </div>
+    </div>
+
+    <div class="topbar-sep"></div>
+
+    <div id="breadcrumb"><span>Checklist de Orçamentos</span></div>
+
+    <div class="topbar-actions">
+      <button class="btn btn-out btn-sm" onclick="exportarBackup()" title="Exportar todos os dados para ficheiro .json">⬇ Exportar</button>
+      <button class="btn btn-out btn-sm" onclick="document.getElementById('input-importar').click()" title="Restaurar dados a partir de ficheiro .json">⬆ Importar</button>
+      <input type="file" id="input-importar" accept=".json" style="display:none" onchange="importarBackup(event)">
+    </div>
+  </div>
+
+  <div id="layout">
+
+    <div id="nav">
+      <button class="nav-btn active" onclick="mostrarPainel('checklist')" data-p="checklist">
+        ☑<span class="tip">Checklist</span>
+      </button>
+      <button class="nav-btn" onclick="mostrarPainel('extrator')" data-p="extrator">
+        ⬆<span class="tip">Importar Itens</span>
+      </button>
+      <button class="nav-btn" onclick="mostrarPainel('relatorio')" data-p="relatorio">
+        ↓<span class="tip">Relatório Campo</span>
+      </button>
+      <button class="nav-btn" onclick="abrirModal()" data-p="nova">
+        ＋<span class="tip">Nova Obra</span>
+      </button>
+    </div>
+
+    <div id="main">
+
+      <div id="panel-checklist" class="panel active">
+
+        <div id="col-obras">
+          <div class="col-hdr">
+            <h3>Obras</h3>
+            <span id="cnt-obras" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)"></span>
+          </div>
+          <input type="text" id="search-obras" placeholder="Pesquisar obra…" oninput="filtrarObras(this.value)">
+          <div id="lista-obras"></div>
+        </div>
+
+        <div id="col-itens">
+          <div class="col-hdr">
+            <h3>Itens</h3>
+            <span id="cnt-itens" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)"></span>
+          </div>
+          <div id="itens-filtro">
+            <button class="fbtn active" onclick="setFiltro('todos', this)">Todos</button>
+            <button class="fbtn" onclick="setFiltro('pendente', this)">Pendente</button>
+            <button class="fbtn" onclick="setFiltro('conferido', this)">Conferido</button>
+            <button class="fbtn" onclick="setFiltro('alteracao', this)">Alteração</button>
+            <button class="fbtn" onclick="setFiltro('anulado', this)">Anulado</button>
+            <button class="fbtn" onclick="setFiltro('extra', this)">Extra</button>
+          </div>
+          <div id="lista-itens">
+            <div class="empty-state">
+              <div style="font-size:28px;opacity:.3">📋</div>
+              Seleciona uma obra
+            </div>
+          </div>
+          <div class="add-row" id="add-row" style="display:none">
+            <input class="add-inp" id="add-inp" placeholder="Item extra (fora de ORC)…"
+              onkeydown="if(event.key==='Enter') adicionarItemExtra()">
+            <button class="btn btn-gold btn-sm" onclick="adicionarItemExtra()">＋</button>
+          </div>
+        </div>
+
+        <div id="col-estado">
+          <div id="estado-hdr"><h3>Estado do Item</h3></div>
+          <div id="estado-body">
+            <div class="empty-state">
+              <div style="font-size:32px;opacity:.3">🔍</div>
+              Seleciona um item
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="panel-extrator" class="panel">
+        <div id="ext-inner">
+
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--gold2)">Importar Itens do ORC</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:6px;line-height:1.7">
+              ① Envia o PDF no chat → ② Recebe o JSON → ③ Cola aqui e importa
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr">1 · Obra de Destino</div>
+            <div class="card-body">
+              <div class="obra-search-wrap">
+                <input class="obra-search-inp" id="ext-search"
+                  placeholder="Pesquisar obra por código ou nome…"
+                  oninput="filtrarDropdownObra('ext')" onfocus="abrirDropdown('ext')"
+                  autocomplete="off">
+                <div class="obra-dropdown" id="ext-drop"></div>
+              </div>
+              <div id="ext-obra-tag" style="display:none"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr">2 · Método de Importação</div>
+            <div class="card-body">
+              <div class="mode-toggle">
+                <button id="tab-pdf" class="mode-btn active" onclick="setModoImport('pdf')">
+                  📄 Texto do PDF
+                </button>
+                <button id="tab-json" class="mode-btn inactive" onclick="setModoImport('json')">
+                  { } JSON do Chat
+                </button>
+              </div>
+
+              <div id="mode-pdf">
+                <div class="hint" style="margin-bottom:8px">
+                  Seleciona tudo no PDF (<code>Ctrl+A</code>), copia (<code>Ctrl+C</code>) e cola aqui.
+                  O sistema reconhece automaticamente o formato Fercayo.
+                </div>
+                <textarea class="ext-ta" id="txt-pdf"
+                  placeholder="Cola aqui o texto copiado do PDF…&#10;&#10;Ex: 7.1.8.2.1  800x2100mm (002)  Porta de abrir esmaltada NCS S 1002 Y  un  2,00"></textarea>
+                <div style="margin-top:10px;display:flex;gap:8px">
+                  <button class="btn btn-gold" onclick="processarTextoPDF()">⚡ Processar</button>
+                  <button class="btn btn-out" onclick="document.getElementById('txt-pdf').value=''">Limpar</button>
+                </div>
+              </div>
+
+              <div id="mode-json" style="display:none">
+                <div class="hint" style="margin-bottom:8px">
+                  Envia o PDF no chat e pede: <code>"gera o JSON de itens para importar"</code>
+                  — importação 100% precisa.
+                </div>
+                <textarea class="ext-ta" id="txt-json"
+                  placeholder='Cole aqui o JSON gerado no chat…'></textarea>
+                <div style="margin-top:10px;display:flex;gap:8px">
+                  <button class="btn btn-gold" onclick="processarJSON()">⚡ Processar</button>
+                  <button class="btn btn-out" onclick="document.getElementById('txt-json').value=''">Limpar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" id="ext-prev-card" style="display:none">
+            <div class="card-hdr">
+              <span>3 · Pré-visualização</span>
+              <span id="ext-cnt" style="font-weight:400;color:var(--text3)"></span>
+            </div>
+            <div class="card-body">
+              <div id="ext-obra-tag2" style="display:none;margin-bottom:10px"></div>
+              <div style="display:grid;grid-template-columns:90px 1fr 120px 70px 60px 24px;gap:6px;padding:5px 10px;margin-bottom:4px;border-bottom:1px solid var(--border)">
+                <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase">Artigo</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase">Descrição</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase">Dims</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase">Tipo</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase">Qt/Un</span>
+                <span></span>
+              </div>
+              <div id="ext-prev"></div>
+              <div style="margin-top:12px;display:flex;gap:8px;padding-top:10px;border-top:1px solid var(--border)">
+                <button class="btn btn-gold" onclick="confirmarImportacao()">✓ Importar para Obra</button>
+                <button class="btn btn-out" onclick="cancelarImportacao()">Cancelar</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panel-relatorio" class="panel">
+        <div id="rel-inner">
+
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--gold2)">Relatório de Campo</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:4px">
+              Folha de trabalho para obra ou reunião · optimizada para impressão
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr">Selecionar Obra</div>
+            <div class="card-body">
+              <div class="obra-search-wrap">
+                <input class="obra-search-inp" id="rel-search"
+                  placeholder="Pesquisar obra por código ou nome…"
+                  oninput="filtrarDropdownObra('rel')" onfocus="abrirDropdown('rel')"
+                  autocomplete="off">
+                <div class="obra-dropdown" id="rel-drop"></div>
+              </div>
+              <div id="rel-obra-tag" style="display:none"></div>
+            </div>
+          </div>
+
+          <div class="card" id="rel-resumo-card" style="display:none">
+            <div class="card-hdr">Resumo</div>
+            <div class="card-body" id="rel-resumo-body"></div>
+          </div>
+
+          <div id="rel-acao" style="display:none">
+            <button class="btn btn-gold" onclick="gerarPDF()">🖨 Imprimir Folha de Campo</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="sumbar">
+    <div class="sum-item">
+      <div class="sum-dot" style="background:var(--estado-pendente)"></div>
+      <span class="sum-label">Pendente</span>
+      <span class="sum-val" id="s-pend">0</span>
+    </div>
+    <div class="sum-item">
+      <div class="sum-dot" style="background:var(--estado-conferido)"></div>
+      <span class="sum-label">Conferido</span>
+      <span class="sum-val" id="s-conf">0</span>
+    </div>
+    <div class="sum-item">
+      <div class="sum-dot" style="background:var(--estado-alteracao)"></div>
+      <span class="sum-label">Alteração</span>
+      <span class="sum-val" id="s-alt">0</span>
+    </div>
+    <div class="sum-item">
+      <div class="sum-dot" style="background:var(--estado-anulado)"></div>
+      <span class="sum-label">Anulado</span>
+      <span class="sum-val" id="s-anul">0</span>
+    </div>
+    <div class="sum-item">
+      <div class="sum-dot" style="background:var(--estado-extra)"></div>
+      <span class="sum-label">Extra</span>
+      <span class="sum-val" id="s-ext">0</span>
+    </div>
+    <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)" id="s-total"></div>
+  </div>
+
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) fecharModal()">
+    <div class="modal">
+      <h3>＋ Nova Obra</h3>
+      <div class="mfield">
+        <div class="mlabel">Código</div>
+        <input class="minp" id="m-cod" placeholder="Ex: 306_26" style="text-transform:uppercase">
+      </div>
+      <div class="mfield">
+        <div class="mlabel">Nome</div>
+        <input class="minp" id="m-nom" placeholder="Ex: Westview · R. Principal Lisboa">
+      </div>
+      <div class="mfield">
+        <div class="mlabel">ORC (opcional)</div>
+        <input class="minp" id="m-orc" placeholder="Ex: 1234_25_V01">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-out" onclick="fecharModal()">Cancelar</button>
+        <button class="btn btn-gold" onclick="criarObra()">Criar Obra</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/checklist.js"></script>
+</body>
+</html>
