@@ -8,10 +8,10 @@ async function iniciar() {
   db = await abrirDB();
 
   const obrasExistentes = await dbLerTudo(db, 'obras');
-  if (obrasExistentes.length === 0) {
-    for (const obra of OBRAS_DEFAULT) {
-      await dbEscrever(db, 'obras', obra);
-    }
+  const idsExistentes = new Set(obrasExistentes.map(o => o.id));
+  const obrasFaltantes = OBRAS_DEFAULT.filter(o => !idsExistentes.has(o.id));
+  for (const obra of obrasFaltantes) {
+    await dbEscrever(db, 'obras', obra);
   }
 
   todasObras = await dbLerTudo(db, 'obras');
@@ -25,6 +25,33 @@ async function iniciar() {
     }
   }
 
+  const itens301 = await dbLerPorIndice(db, 'itens', 'obraId', '301_26');
+  if (itens301.length === 0) {
+    for (const item of SEED_301_26) {
+      item.criadoEm = Date.now();
+      await dbEscrever(db, 'itens', item);
+    }
+  }
+
+  const itens286 = await dbLerPorIndice(db, 'itens', 'obraId', '286_26');
+  if (itens286.length === 0) {
+    for (const item of SEED_286_26) {
+      item.criadoEm = Date.now();
+      await dbEscrever(db, 'itens', item);
+    }
+  }
+
   renderizarObras();
   document.getElementById('cnt-obras').textContent = `${todasObras.length} obras`;
+
+  /* ── restaurar sessão anterior ── */
+  const savedObraId = localStorage.getItem('ck_obraId');
+  const savedItemId = localStorage.getItem('ck_itemId');
+  if (savedObraId && todasObras.find(o => o.id === savedObraId)) {
+    await selecionarObra(savedObraId);
+    if (savedItemId) {
+      const item = itensObra.find(i => i.id === savedItemId);
+      if (item) selecionarItem(item.id);
+    }
+  }
 }

@@ -2,131 +2,223 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Fercayo — Levantamento em Obra</title>
-  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAYE0lEQVR4nL17e3hd1XXnb+19zn3rbUl+PwVyJHBwATsmBEEDxPABYShXX0gzDZkyTRMgDZNCYdrmWu0kHSaTMJMHCWlnWmhCJroJDEkIiZMhVkzBBGwgVMKOsTG2bMuSJUu673vO3mv+2OccXVn3yi/K8rc/2+eevc9av7X2eu1zCO8OUQqgoSSoa7SHAOBoNkuVNyxKJBgAhtoGuCsN7gP0u8Tbvw0xQMkkZKoH1tmukeqBlUxCAqBT3nyW9I4v7DGMdBqq8vofbu5YGg/R6hCrJWVNq0KSEyHBAgDKmrSjKGNJfst1rENTDr31f36550jl/P4kZLrKuudK7xgAySTkD9JQ7P3/Y9esbquL0VW24A9KxkYQ1tiS4lIQRJWnMgBmwFUMV+sMM73JRC+6SmwdLdoD6a1DE9591JuEeKeAOGcAUimILVvARGAAuPPGjmtsC5+Q4A+FQ9QsCFCaoRRDMxgMDQIzuOLxDAL5fwkhQFIQpCBoDZRcPqaYnimU5aOPPL1nGwAwg7ZsAfX1nZuvOBcAqD8J0etp4q6bOpJhG/eEJG+yJMFxNZRiBSJmQJB51uk+jxlgAmuASAqStkVwXIar8euSS//9a0+9+WPAbI3ec7CGswIglYLwkf+TG9Zuaoy4XwjZdBUxo+RqDQaDyBf6nIkBBrMGQYRtQZoJZYWfZUr8n7/1ozdfYYC2pM7OGs6YwWQSMp2G6urqCm1e6/xN2OJ7QxaJkqMUMxERxJmueYakGKCoLURJcbnkiC9+5Ynf/S0A7fN2JoudEQCpHlh9A3D/w4c6O1vr+dF4BBuLJcUMaILx/u8WMaCIICMhiVyRf3XkhH37P/9y6KDP4+muc9oA+AvfddN5VzdE8b2wTQuKjnaJhBW4MmYQzb8s+w4vmKMBEMhMBIONhyMxZ55ZuWIuwMxaRW1hFV0Mj2VV77d/su+FMwHhtACYEb4z2RzX3xUE29GswCyVUw7YEZYNrZRxYbUeKARY62COtEIAAOWWARCEtCCkhFsuzRJfSAvMDNYqYJvBkJYNEtINSbJcjdxkkW792pO/+1mqp8fqGxg4JQinBMAX/rM3dd7amODvM5iUBgNa2KEoGhcs9jRPyE4dRyReD8sKzdE0YCykXMwhHE0EczInRsGsUd+8EACQmx5HqZBFc/uKYA4RIZ85ASsUQSgc9awEEEIiOzmGfPYEQFJbEoKZnOM5uvEbT+35+emAMC8AvlO5++a1PS1x/QsCW64GW5YUuekJ/H7yHlz70fvAWkNrhR//78/j+j/6a4QiMWCWEZiYn50aw+vP/wSbrvsEtFYQ0sLX792Mjvf2YPPH7gcA/Gbrd7FrWz/+9ItPgTWD2dw38MTXEa9fgEuu/giU60JIiXIxj28+cBPGR96CbYehNGtbEimN/PEsXfmNH+15+VSOsabHTqVMtvXpW96zoinOP7AEbKXBkiCYGZYVwvnrrwSRgJAWnHIRDS2LEY4mQCRAonJIkBDQykVT2zKQEJCWDWaNzIljaF/aYeaQQEPzQixa0eX9nyCEBSKBxtalmBo/4l032n/x549h5MAgwuEYmBlSQLiadciieHOcn/zjGy9o709Dp+aRs9YP1D0E6unpsRpt/f1YiBa4Gq6UJEgIsHJR39KO9qWdwX6fHBtGXWMrAEBr5WndDOPoAKVcLO24KHhIdnIM5WIO0URDYCmTx4fRsmjlrHn+vaX8tGFaWCiXCnjlV/0IR+MAMwQRCAQpSDpKu3URsbQ9Xn6MAO5OJmtaelUA/Azvfe0jn2+uExvLjnIFwSIAUgi45QKWdVyEWH2TJyxQLuTgFHOVGAbD9/C2HUa8oSUQ7NjB3YhEolh9wfuDOcX8NFoWrjBziQLvXy7m4LrGMZIQGD20G5NjBxEKhQFokLkdBEAQWUVHuU1xee1fJM+/pzedVv3JZNUwPQeApJda3pPsvLAugvtLjlJEQhIZQUgQmBVal6wxOvMsQGs1S2OzyQAQjtVBCBlEgQNDLyDe0GKconetfflaLDv/YsOcEIEvicTqEI7EghXHhvdCOSVTOPi8zRpCOq5WiQj9l8/ecuHqZDqtU6m58s650NVlHlln4aFoSNiaCcLIbRJ6b/8tWLzGm2E4dEo5OKVCDQCAYm4aoUgcAIOEhHId7Hl5Ky695t/PAMmMeF0T4vUtAXC+9YwN70G8fkGwXnZyDIAxfZ+3kwYpzYhHZKwuXP4SATw0NHcrzAKgP5mUfX3Q9yXXXlMXEx8sOUpJggzMiwBihm3baGpbblj0EpZ4fQsyE0d8tk8SfgpO2YCjtQYR4cj+15CZOIp177/ZzBECDMbCld0Q0uuhMIOEgHId7H99O9qXdwZrhsJRT/uoOaQgWSwrlYiIW/48uXZTOp1Wfr+iKgCDXWkGgFiY/tISM/t39gAEGS9eSfUtiz2twJgLZrbG1PgR1DW2BRmeWy7itV//ABdefjNi9c3QWvlm61mJL7/ZFof2vIRSfhpLz/u94LfuTTciUd8Crd0aW8AbAIdsQjyEB8zMZHULSCZhtH9b14ZYGFeUHa2FIFkLXSGEZwEEZkaioRWsXRzc/SIAgvb2NGttrMVzaETG0b2+/Qmsu/wWzEd+KjFy4HWsWXcFYnXNQc6RaGzFhutuRyk3Bcu2jbutxqsgq+Rojobougduu2BtOp1Wlb5gBgAPmYTFfxy1BYFYz/jxmSGEgHZLmBjZX8GkMdWreu/Fq9v6A2AAwCkVAmsxDpNx+M1X0LbsfCzpuAjMDCGq11H+Gof37sJFPbd6TzJWxMzYeN0dWLiyG8XsJKRlzeF1ZrCKh4UVsdTtAIBtPXMAoN50Wn3smnVxS/JNjmIICGEczOxhQJAIhWdM1TCksWj1OhQy49jz0s8CJgvZCWjlZ6MmIzy8dxfOW/9BSCs0T+QwgpbyGQCMld0mVAohPWAYkVg9ej/3D1iwpAPl/DSEEHP4NTwLoRTDEviDP7n4YrtvYCAoKAQA9CeTAgBWtKn3x8NyoVJaQ0BUg5OIANYoZE/MZZkZm278FHb/5mkAgFYOYnUtsL1MTQgLpXwGY4d249JrP+4lMDVzsUDjDa3LYIejs3/1QG9euAqf6Pu/uPyWP4NySqDK3pPPs4BwNHM0RB0L1uYuBsDJpJFdAMBg1ygBQFTqD4UsYkHQNUKL2f9S4O3B5zxGKGCIiLCs81KQECgXsnDLReSmjxtBvIRp766taFm0GtG6ZmjT8aqufy+/cIp5KKcE5ThzISKTXodj9XjPhushiGuFRAiwioYEopKuBoCurp4ZC9iyZUABgC3pfZpBID+xrPKHGaFwFIf37kKpkDFhsCIZIhKob16EiZH9KJfyCEfrAmYBYM9LP0XXphsRNEJr6Z8IzBp1zQvRuuQ8nBh9G2AOgJltCYxSMet5/ep/QKY5aQlxGQBswYAGAMHesz7+4fc2CoFOpRne1qnqVQGGbYeRmTiMN174kRH8pH3c2LoM0+OHcXTfqzOlrxCYPn4YWjlYtOYiw7w4VffMANS+8gLkpsY8Bub2GogIrFwvzFL1qAUirRlSctfdmzeHyfQPSWxJmacsblDLLUktWnNg6jVBIFMT7N35s1na9fXZ0LoU//LEVxCO1cEKRQIn+PbQc1i0ap0xXX3q/qUfYttXdqNcyCCfmfB+qQTBsz7XgXGctcIhSDFDEhbXLziyGABSKZDwQ0KUeXnEliCCIkPzJBcMaYeQnTgK1yl5jnGmz++WiyAQlnVuBLMOMrvB536INeuvCYQ7LWKGZUcQTTRi366t3r6vUt7Px68ZBCYO29K2BC8DgO6hJAlcaeZHQ9xiSZOvzKf9mW0QQmZ8GCeCfIADh9a8aA2uuf2Lpo3lpb6Hdu+AU8yibdlaT1PzAWD2OrNZk5nRsqQTJ0bewtih3cG6JwN1Kr5JsA5ZhIjkFgAYHB2diUFFLRYJgdoZ1cl7SlpwSnm86W0Dv3UFAC2LO7Dk/EsCzQDA2MFBNC1cBWmHPebnAlDZ86vUHmuFaKIB6676KHY89T8wfXzYNFi0CjaD6xQBaJCo7gPIREcWAghbnAAAXFmRCUqQFDV9aFW/CiEEJkcPGDlPFoS1B4pAuZjD69seR9vyLk+/VXTOxlJISGjloJA9gVJ+CgC8LURobFuBdVd+FP/vsb9EKT8FISS0coPIYNxT7T8CxrsXHfI7MDNH1+xFJeEnEKckhpQW8lN+ATTj0YkqFmGGHY5CSgtuKV99JdYgMlFi19a/x9uvDyCfGYeQFhoWLMPi8y7Fmt+7FkvO34AVF1wBZsbTD9+JDTfciaVrNwVr+DGf5+FfEEAWBToIABCSCwHfpwGA2QYShcw4tHI9LVUeePowmSiRaGpHXctiM7eK8MN7duCnD38aU2MH0byoAwtXvRflYg5jBwdxcHA7Xnr661hxQQ823HAXVl7Yg0RjG579zl+jqX0VNtx4t5cp8rz8M0AMIC6VH05mAIhbdITM3qP5EpRKklLCLeVRLmYRiTdWkz8ApaF1ube/K86F/Zb39HH8/JHPwC3lcfM9j2J59wcQjtUDAKbHDuHo/l048NqzeOu1Z5H+uyTOu+Q6XPVHX0DvAz/A4PZ+PPPNOyGkhXAkAWJdM8FiApgJuZI0prgNsLqH2hgAso4Yj5s08HTlhxDSdIKKOUTijdXl9+j8DTdi944n4Ts4wCRQgiR2P/9DZMaHccPd/4COS643zHrg1LcuQ33rMnRu/DDyU2M48Pqv8Ma//BD9f3sTFq5Zj+XdV2DlhVdix1MPId7QanqUNZggkHC1BklxFAC629rY8psgcPhA2WUlJeRJh/c1yAtR2oVbLsxcO2manyQt6dyI3z77T5g+fgj1C5aZ4sj7bd+uZ9B9xUfQccn10MoBCSsAacaZEmINrei6vBddl/dicmQ/9r78NPbtegb56XE0tC6FU8zVDq8MlgJUdrlQyMlhwDSARF+fccpjxdghZozYJhZwtbKyamlMcqaFVQsoeJ2h0QMY2bfLXNUKIEIpNwWnkMX6a++AyQ/kLCGIhFcCiyBMMms0LlyNS2+4Gzd/7nF85PM/wYYbPgOnmIMUVnVeidi2BAAcGlIdxwCgrw8sADCnUuKh9I6CZhoMWQIg5kp/WG3AD4VSQNphn90qAFCgwaWdm1D2evt+ATV1/CCWdG5E86LzwAyvnTaTE2itTN7g5/kBGKYzpJQDIW1E6por432Vwdq2BDTotfRMm9y8pLQF27wYRtulAARMNjgfAkIAYIVwNAE7HKspvm8FRALLL+zB8eGhWVgVpsewev21EJYdpNOVOYHwTpXgJUS+RfmWYbYRQ1oWZJDJzR6VwCiiAWCmBSAAwHeEpRK2FssMMnY4b24tiADWCEUTsP3uEM3U8dmJIxg/vNvTpklbo3UtOLZvJ5RbhpCmTVYuZBCONcyaTySQGT+M373wBF7d+m0c3v083HIBJGRgUSdbmRAWSJi3M07mFUQshJD5slaFonjWzDHlsAUAvem0ZgZ98hLrlYsvc/ckIrKzVNYa873tQeaAJFa/wPgA9msBv5GRw8ThPWhZsjaYkmhaBCEtlPJTiNW3esahEWto8/5tyuY3tn8PO554EOVCBmBTeCValmLtZbdi3dV3eEfl2nOwxpTC0fogF6liiTpiCzld0K/e/79e2e3tJh1YAADesqVHfnvnTkdr0R+yCESs560FiMDKQfuq9eYJPHPmDxinlzl+0NOPASaaaEa0rhn5qVFPdo1YYzsSzYs94SWmRg/gxScfBGsH0bomROuaYIdjyE8exY4ffhE/f/g/IndiJPADMwrhqnWM6ZAxWxbBYfG4L6s/rULDxiQyjng0V9IlKYQkzFMZwhxStq64wBNyNim3hILXDvM4BAMo5yZRyk0G9yQaFwaAAcDo/l1wChnTR1QumBUADcsKI97YjsNvbMdPHroNhcz4LBCcUh7wfUcFnwDYkkJmCzpTyFqPAzMdsFkA9PVB9yeT8r5v79xXcumJWEQSAapWWaG1i2hdE1qWdnnyzd4tbimPYmbc+40CL26Ho8H1cjGL/PRYMIeZMfLmS8bp+V4/KL0YrFxEEs3Ijg9j+3ce8CpAvyFSDg5eZpdsULGwpLLif77v0ZdG+vuTkmimHqu2x2nKwX8tlrUrBIlq/QEhCNopoWnx+Ug0L5pVCvvhrZgdh1ueKX78U95QtC5okLrFHEJez1BI09cfPzQIy7JBNbo7rB1EEo048Ooz+O3WR4wzZYZlxyCkmDUPBLYliWxJF06U8SUGaHAwPcuDzgKgN51W/f1Jcd83X/ltrsT/mIhKAWY1J7IIglZlLOm8zFyp0tvPnTgaCGpqFAOQU8zC9o6/po7th1PMBnPGh4eQmxiGZXtH3ic/1xusFWJ1Ldj96+9g7MCrnkP2jsj8+wgAs4pFLFEo89ceeOS1A+n+pDj5XcI5FjA4mOZUCmLa0X+VKerjYVsIAvSssMIa4Wgdlq/7fc9m5vrd6dEDEHLuiY8QEpF4kwGjlEOs3osAYBzbtxOl3KRnDfO15Iz/cUo5DPzjPYGlsXK9hggBDB0JSTmVU4eOIvSFVAoi2Zueo6k5APT1QXd3J+neb/12NFsQfxaypRACasb8BVSpgAXLL0DTos5g3wXk/XtyZG8gKHv9//zkCMr5E2hY2AEASLQsQX3byiABOvzGACw7VNP8Zzs3jVAkgcz4ITz/vb+CWy54W8DnE1oKQdmS+NO+r/1murs7aWA5FQAA0NubVv39Sfnpb+x8fDyjHk1EbZuZXQI8i3ew9oo/NG8+a9crWHSQqbnlAqZH9yPW2OZdN/eMDw8h2tCGcLwRk0f2wA7FzO9gTB7di7G3dsEKx6puqWrE2kUk3oiDr23F67/4lvEnrAGwUx+zrYksf/Wuh3f+NJXqsXp701VflKqZ6CSTac2plJg6Ev7UZM7dlYhaFhMpt5jFiouuxcr115t0VNrwX3Dy8/SpY/uRnzyKpsWdIBKQdgREAocHf4XOy3pBRMhOHEF926pg7hsDj8ItZsy2OYX2T7YEKxTG1MhewFSObl3Ussez7sB3X0t8rr8/Kfv6Bmq+JVazjCMCp1J91JdG4X/eseHDIUs9Fw/LFdNloRZ3Xi4nhofA3klQoBFWENLGgZ0/hhQWlFPExPBQYCHTYwew5tKbMfyvz6Kcn8L06Ftg1ihmjmP4X59FKGI0eNoNieDBgGWFobV2E1HLyhT1nuMZceu2gQG15UrMpKfV5DzV2v7r6A99av17FjWIZyO2WJgvOi5Yz/spjLBssKp8b4ghrTC0cqG167W2TQfYB45IzsfrvMSa3XjUsvIlfvNQRl1978OvvF35VnstOi2o+5NJ2ZtOq6/edfHa9jo8HQuJ1fmidkCwa05irz9X+YhZ16r0XPzfTxcD8tMOdhJRy84W9NChjL7+3odfedvn+VRLnNar7f5rZp/5+s7dwxP2FbkSnq+PS5vACsyaKt4JDEYgW61rqD2nVgJwUokLZi3AuiFm25ki/+KNE+g5E+H9R502+Qtv3rw5/PF141+JR/BprRklR7sgSDrD9c6WvA8oVDgkLYBQKPN/u+3Blx8AoE/H7CvpjBlOpSD+pg+aAfzTn1/67xIh/nI8Ilflii60Zhcgefpt1TMj06tkJaWwYmGJfEnvzhT5P93+5ZefOdtviM6WUepPJkVvOq3+7lMXNq1pjP6FJH1nLCIThZKCUto1rryiYD97YhPfAMsSMhqSyBb1pKvx1TemY1/qe3gg29+flLXi/CkFORfOKvfa39/zvo7GqP4Mkf5oIixblNYoOhqsWZmX28lv1sz3XP88VDMzE0BCkAzbAkIQ8iU9opkemypZD9/x5RfePpmHs6FzNlUGKN2fFL4GHvnsBxbVR0p/EJJ8K0FvjIZlhOB/D8hQmgENDZrd12KQEGQ+l7MkQUrzzVihrHMa2KE0fX+yFHvyk18ZOA4AntY1zjZuevSO7dVUCqK7O0mVpvjY/e/riIA/IC39fjC/F8AKzbwgbAmyKlym/8Gk42pNAmPM9DaBXlWKnlNM22978MUD/pr9/UmZTKZ1ZU1/LvSOOytm0LYtPfLKLQPqZCa/e//lTQKlVsXWQkA1Ca8rrUGaQOPQOJYVdaOffPCXU5XzzIuNPWJLlTXPlf5Nw5bPeHd3G5+Jk2KAtqT8vt2APtevQ+ejdyVu++SHqu6hJPl9eZ+6h9p4sCvNlZ/hvhv0/wHxsWm7v+Z8sgAAAABJRU5ErkJggg==">
-  <link rel="apple-touch-icon" href="data:image/png;base64,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">
-  <meta name="apple-mobile-web-app-title" content="Fercayo">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fercayo · Levantamento</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/levantamento.css">
 </head>
 <body>
 
-<div id="rascunho-banner">
-  <div class="rb-text">📋 Levantamento em curso — Obra: <span id="rb-cod">—</span> · <span id="rb-data">—</span></div>
-  <div class="rb-btns">
-    <button class="rb-continuar" onclick="recuperarRascunho()">Continuar</button>
-    <button class="rb-descartar" onclick="descartarRascunho()">Descartar</button>
+  <!-- ── TOPBAR ──────────────────────────────────────── -->
+  <div id="topbar">
+    <div class="logo">
+      <div>
+        <div class="logo-text">FERCAYO</div>
+        <div class="logo-sub">CARPINTARIAS</div>
+      </div>
+    </div>
+
+    <div class="topbar-sep"></div>
+    <div id="breadcrumb"><span id="bc-obra">Levantamento</span></div>
+
+    <div class="sector-sw">
+      <a class="sector-btn" href="checklist.html">Checklist</a>
+      <span class="sector-btn active">Levantamento</span>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="btn btn-gold btn-sm" onclick="exportarPDF()">🖨 Exportar PDF</button>
+    </div>
   </div>
-</div>
 
-<div class="app-header">
-  <div class="header-logo"><img src="assets/logo.svg" alt="F"></div>
-  <div class="header-divider"></div>
-  <div class="header-text">
-    <h1>Fercayo</h1>
-    <p>Levantamento em Obra</p>
+  <!-- ── LAYOUT ──────────────────────────────────────── -->
+  <div id="layout">
+
+    <!-- NAV -->
+    <div id="nav">
+      <button class="nav-btn active" onclick="mostrarPainel('planta')" data-p="planta">
+        📐<span class="tip">Planta</span>
+      </button>
+      <button class="nav-btn" onclick="mostrarPainel('lista')" data-p="lista">
+        📋<span class="tip">Lista de Artigos</span>
+      </button>
+      <div style="margin-top:auto">
+        <button class="nav-btn" onclick="abrirModalObra()">
+          ＋<span class="tip">Nova Obra</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main">
+
+      <!-- ══ PANEL PLANTA ══════════════════════════════ -->
+      <div id="panel-planta" class="panel active">
+
+        <!-- col artigos -->
+        <div id="col-artigos">
+          <div class="col-hdr">
+            <div class="obra-search-wrap" style="flex:1">
+              <input class="obra-search-inp" id="lev-search"
+                placeholder="Seleccionar obra…"
+                oninput="filtrarDropdownObra()" onfocus="abrirDropdown()"
+                autocomplete="off">
+              <div class="obra-dropdown" id="lev-drop"></div>
+            </div>
+          </div>
+
+          <div id="obra-tag-lev" style="display:none;padding:6px 10px;border-bottom:1px solid var(--border)"></div>
+
+          <input type="text" id="search-artigos" class="search-inp"
+            placeholder="Filtrar artigos…" oninput="filtrarArtigos(this.value)">
+
+          <div id="lista-artigos" style="flex:1;overflow-y:auto">
+            <div class="empty-state">
+              <div style="font-size:28px;opacity:.3">📐</div>
+              Selecciona uma obra
+            </div>
+          </div>
+        </div>
+
+        <!-- col planta -->
+        <div id="col-planta">
+          <div class="planta-toolbar">
+            <h3 id="planta-titulo">Planta</h3>
+            <div class="tool-sep"></div>
+            <button class="tool-btn" id="tool-pin" onclick="setModo('pin')" title="Clica na planta para colocar pin do artigo seleccionado">
+              📌 Colocar Pin
+            </button>
+            <button class="tool-btn" id="tool-view" onclick="setModo('view')">
+              🔍 Ver
+            </button>
+            <div class="tool-sep"></div>
+            <label class="tool-btn" style="cursor:pointer" title="Carregar imagem da planta (PNG, JPG) ou PDF">
+              ⬆ Carregar Planta
+              <input type="file" id="upload-planta" accept="image/*,.pdf"
+                onchange="uploadPlanta(event)" style="display:none">
+            </label>
+            <button class="tool-btn" onclick="limparPlanta()" title="Remover imagem da planta">🗑</button>
+            <div class="tool-sep"></div>
+            <button class="tool-btn" onclick="zoomOut()" title="Reduzir zoom">−</button>
+            <span id="zoom-level" class="zoom-label">100%</span>
+            <button class="tool-btn" onclick="zoomIn()" title="Aumentar zoom">＋</button>
+            <button class="tool-btn" onclick="resetZoom()" title="Repor zoom" style="font-size:10px">⊙</button>
+            <div class="tool-sep"></div>
+            <span class="zoom-label">Pin:</span>
+            <input type="range" id="pin-size-slider" min="16" max="52" value="28"
+              oninput="setPinSize(this.value)" class="pin-slider" title="Tamanho dos pins">
+          </div>
+
+          <div class="planta-canvas-wrap" id="planta-wrap">
+            <div id="planta-empty" class="planta-empty">
+              <div style="font-size:40px;opacity:.3">📄</div>
+              <div>Carrega uma imagem da planta</div>
+              <div style="font-size:11px;margin-top:4px">PNG · JPG · PDF (primeira página)</div>
+              <label class="btn btn-gold btn-sm" style="cursor:pointer;margin-top:12px">
+                ⬆ Carregar Planta
+                <input type="file" accept="image/*,.pdf" onchange="uploadPlanta(event)" style="display:none">
+              </label>
+            </div>
+            <div id="planta-zoom-layer">
+              <img id="planta-img" style="display:none;width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0">
+              <div id="pins-layer" style="position:absolute;inset:0;pointer-events:none"></div>
+            </div>
+          </div>
+
+          <!-- simbologia -->
+          <div class="simbologia-bar">
+            <span class="simb-title">Simbologia:</span>
+            <span class="simb-item"><span class="simb-dot" style="background:#AF7C34"></span>P Porta</span>
+            <span class="simb-item"><span class="simb-dot" style="background:#2980B9"></span>J Janela</span>
+            <span class="simb-item"><span class="simb-dot" style="background:#8E44AD"></span>A Armário</span>
+            <span class="simb-item"><span class="simb-dot" style="background:#27AE60"></span>V Vão</span>
+            <span class="simb-item"><span class="simb-dot" style="background:#E67E22"></span>M Móvel</span>
+            <span class="simb-item"><span class="simb-dot" style="background:#6A7079"></span>X Outro</span>
+          </div>
+        </div>
+
+        <!-- col detalhe -->
+        <div id="col-detalhe">
+          <div id="detalhe-header">
+            <div class="empty-state" style="height:80px">
+              <div style="font-size:22px;opacity:.3">📌</div>
+              Selecciona um artigo
+            </div>
+          </div>
+          <div id="detalhe-body" style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PANEL LISTA ═══════════════════════════════ -->
+      <div id="panel-lista" class="panel">
+        <div style="flex:1;overflow-y:auto;padding:20px">
+          <div style="font-size:16px;font-weight:700;color:var(--gold2);margin-bottom:4px">Lista de Artigos</div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:16px" id="lista-obra-sub">Selecciona uma obra para ver os artigos</div>
+          <div id="tabela-artigos">
+            <div class="empty-state"><div style="font-size:28px;opacity:.3">📋</div>Sem obra seleccionada</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
-<div class="cerejeira-bar"></div>
 
-<div class="step-tabs" id="step-tabs">
-  <div class="step-tab active" id="tab-0" onclick="goToStep(0)">01 · Obra</div>
-  <div class="step-tab" id="tab-1" onclick="goToStep(1)">02 · Acesso</div>
-  <div class="step-tab" id="tab-2" onclick="goToStep(2)">03 · Fotos</div>
-  <div class="step-tab" id="tab-3" onclick="goToStep(3)">04 · Resumo</div>
-</div>
-<datalist id="codigos-list"></datalist>
-
-<div class="section active" id="section-0">
-  <p class="section-title">Informações da Obra</p>
-  <div class="section-line"></div>
-  <p class="section-sub">Dados de identificação da obra.</p>
-  <div class="field"><label>Código da Obra</label><input type="text" id="cod-obra" list="codigos-list" placeholder="ex: 231_24" autocomplete="off" oninput="saveCodigoSuggestion(this.value)"></div>
-  <div class="field"><label>Morada / Local da Obra</label><input type="text" id="morada" placeholder="Rua, cidade..."></div>
-  <div class="field"><label>Cliente</label><input type="text" id="cliente" placeholder="Nome do cliente"></div>
-  <div class="field-row">
-    <div class="field"><label>Medidor</label><select id="medidor-select" onchange="handleMedidorChange(this.value)"><option value="Lucas">Lucas</option><option value="outro">Outro...</option></select></div>
-    <div class="field"><label>Data</label><input type="date" id="data-lev"></div>
+  <!-- ── SUMBAR ──────────────────────────────────────── -->
+  <div id="sumbar">
+    <div class="sum-item">
+      <div class="sum-dot" style="background:#AF7C34"></div>
+      <span class="sum-label">Pins colocados</span>
+      <span class="sum-val" id="s-pins">0</span>
+    </div>
+    <div class="sum-item">
+      <div class="sum-dot" style="background:#4caf7d"></div>
+      <span class="sum-label">Artigos</span>
+      <span class="sum-val" id="s-artigos">0</span>
+    </div>
+    <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)" id="s-obra-info"></div>
   </div>
-  <div class="field" id="medidor-outro-wrap" style="display:none"><label>Nome do Medidor</label><input type="text" id="medidor-outro" placeholder="Escreve o nome..."></div>
-  <div class="field-row">
-    <div class="field"><label>Diretor de Obra</label><select id="diretor-select" onchange="handleDiretorChange(this.value)"><option value="Junior">Junior</option><option value="Jorge">Jorge</option><option value="Vítor">Vítor</option><option value="João">João</option><option value="outro">Outro...</option></select></div>
-    <div class="field"><label>Cód. Revisão</label><input type="text" id="revisao" placeholder="R0"></div>
+
+  <!-- ── MODAL NOVA OBRA ─────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)fecharModalObra()">
+    <div class="modal">
+      <h3>＋ Nova Obra</h3>
+      <div class="mfield">
+        <div class="mlabel">Código</div>
+        <input class="minp" id="m-cod" placeholder="Ex: 306_26" style="text-transform:uppercase">
+      </div>
+      <div class="mfield">
+        <div class="mlabel">Nome</div>
+        <input class="minp" id="m-nom" placeholder="Ex: Westview · R. Principal">
+      </div>
+      <div class="mfield">
+        <div class="mlabel">ORC (opcional)</div>
+        <input class="minp" id="m-orc" placeholder="Ex: 1234_25_V01">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-out" onclick="fecharModalObra()">Cancelar</button>
+        <button class="btn btn-gold" onclick="criarObra()">Criar Obra</button>
+      </div>
+    </div>
   </div>
-  <div class="field" id="diretor-outro-wrap" style="display:none"><label>Nome do Diretor de Obra</label><input type="text" id="diretor-outro" placeholder="Escreve o nome..."></div>
-  <div class="divider-label">Tipo de Intervenção</div>
-  <div class="options-grid">
-    <div class="option-btn" data-group="tipo" data-val="Obra Nova" onclick="selectOption(this)">Obra Nova</div>
-    <div class="option-btn" data-group="tipo" data-val="Remodelação" onclick="selectOption(this)">Remodelação</div>
-    <div class="option-btn" data-group="tipo" data-val="Trabalho Extra" onclick="selectOption(this)">Trabalho Extra</div>
-    <div class="option-btn" data-group="tipo" data-val="Outro" onclick="selectOption(this)">Outro</div>
-  </div>
-  <div class="divider-label">Fase da Obra</div>
-  <div class="options-grid three">
-    <div class="option-btn" data-group="fase" data-val="Em bruto" onclick="selectOption(this)">Em bruto</div>
-    <div class="option-btn" data-group="fase" data-val="Revestimento" onclick="selectOption(this)">Revestimento</div>
-    <div class="option-btn" data-group="fase" data-val="Acabada" onclick="selectOption(this)">Acabada</div>
-  </div>
-</div>
 
-<div class="section" id="section-1">
-  <p class="section-title">Acesso à Obra</p>
-  <div class="section-line"></div>
-  <p class="section-sub">Logística de entrega e montagem.</p>
-  <div class="field-row">
-    <div class="field"><label>Encarregado</label><input type="text" id="encarregado" placeholder="Nome"></div>
-    <div class="field"><label>Contacto</label><input type="tel" id="contacto" placeholder="+351..." inputmode="tel"></div>
-  </div>
-  <div class="field"><label>Horário de Acesso</label><input type="text" id="horario" placeholder="ex: Seg-Sex 8h–18h"></div>
-  <div class="field"><label>Observações de Acesso</label><textarea id="obs-acesso" placeholder="Elevador, escadas, condicionantes..."></textarea></div>
-  <div class="field"><label>Observações Gerais</label><textarea id="obs-gerais" placeholder="Notas gerais sobre a obra..."></textarea></div>
-</div>
-
-<div class="section" id="section-2">
-  <p class="section-title">Registo Fotográfico</p>
-  <div class="section-line"></div>
-  <p class="section-sub">Uma entrada por fotografia.</p>
-  <div class="info-box">📸 Adiciona referência e descrição em cada fotografia.</div>
-  <div class="foto-list" id="foto-list"></div>
-  <button class="add-foto-btn" onclick="addFoto()">+ Adicionar Fotografia</button>
-</div>
-
-<div class="section" id="section-3">
-  <p class="section-title">Resumo Final</p>
-  <div class="section-line"></div>
-  <p class="section-sub">Confirma antes de gerar o documento.</p>
-  <div id="summary-content"></div>
-</div>
-
-<div class="section" id="section-4">
-  <div class="pdf-success">
-    <div class="pdf-icon">📄</div>
-    <p class="pdf-title">Levantamento Concluído</p>
-    <p class="pdf-sub">Documento pronto para guardar ou partilhar.</p>
-    <button class="btn-full btn-download" onclick="downloadPDF()">⬇ Guardar PDF</button>
-    <button class="btn-full btn-whatsapp" onclick="shareWhatsApp()">📲 Partilhar via WhatsApp</button>
-    <button class="btn-full btn-edit" onclick="backToEdit()">✏ Editar Levantamento</button>
-    <button class="btn-full btn-new" onclick="resetApp()">+ Novo Levantamento</button>
-  </div>
-</div>
-
-<div class="nav-bar" id="nav-bar">
-  <button class="btn btn-back" id="btn-back" onclick="goBack()" style="display:none">← Voltar</button>
-  <button class="btn btn-next" id="btn-next" onclick="goNext()">Continuar →</button>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Shared -->
-<script src="js/shared/db.js"></script>
-<!-- Levantamento modules (ordem de dependência) -->
-<script src="js/levantamento/logo-data.js"></script>
-<script src="js/levantamento/state.js"></script>
-<script src="js/levantamento/navigation.js"></script>
-<script src="js/levantamento/fotos.js"></script>
-<script src="js/levantamento/rascunho.js"></script>
-<script src="js/levantamento/pdf.js"></script>
-<script src="js/levantamento/app.js"></script>
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- Shared -->
+  <script src="js/shared/db.js"></script>
+  <!-- Data -->
+  <script src="js/data/obras-default.js"></script>
+  <!-- Levantamento modules -->
+  <script src="js/levantamento/state.js"></script>
+  <script src="js/levantamento/artigos.js"></script>
+  <script src="js/levantamento/planta.js"></script>
+  <script src="js/levantamento/detalhe.js"></script>
+  <script src="js/levantamento/db-init.js"></script>
+  <script src="js/levantamento/app.js"></script>
 </body>
 </html>

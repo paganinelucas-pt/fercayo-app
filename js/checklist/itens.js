@@ -12,9 +12,10 @@ async function carregarItens() {
 
 function renderizarItens() {
   const el = document.getElementById('lista-itens');
-  const itensFiltrados = filtroEstado === 'todos'
+  let itensFiltrados = filtroEstado === 'todos'
     ? itensObra
     : itensObra.filter(i => i.estado === filtroEstado);
+  if (filtroNotas) itensFiltrados = itensFiltrados.filter(i => i.nota);
   document.getElementById('cnt-itens').textContent = `${itensObra.length} itens`;
   if (!itensFiltrados.length) {
     el.innerHTML = `<div class="empty-state">
@@ -34,17 +35,27 @@ function renderizarItens() {
   `).join('');
 }
 
+let filtroNotas = false;
+
 function setFiltro(valor, botao) {
   filtroEstado = valor;
-  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.fbtn:not(#fbtn-notas)').forEach(b => b.classList.remove('active'));
   botao.classList.add('active');
+  renderizarItens();
+}
+
+function toggleFiltroNotas(botao) {
+  filtroNotas = !filtroNotas;
+  botao.classList.toggle('active', filtroNotas);
   renderizarItens();
 }
 
 function selecionarItem(id) {
   itemAtual = itensObra.find(i => i.id === id);
+  if (itemAtual) localStorage.setItem('ck_itemId', id);
   renderizarItens();
   renderizarEstado();
+  document.querySelector(`.item-row.selected`)?.scrollIntoView({ block: 'nearest' });
 }
 
 function renderizarEstadoVazio() {
@@ -65,7 +76,7 @@ function renderizarEstado() {
     { k: 'anulado',   lbl: 'Anulado',            sub: 'Item cancelado / não se aplica',   ic: '✕',  cor: 'var(--estado-anulado)' },
     { k: 'extra',     lbl: 'Extra',              sub: 'Fora de ORC · orçamento em curso', ic: '＋', cor: 'var(--estado-extra)' },
   ];
-  const mostrarNota = ['alteracao', 'extra'].includes(item.estado) || item.nota;
+  const mostrarNota = true;
   document.getElementById('estado-body').innerHTML = `
     <div class="ec">
       <div class="ec-hdr">Informação</div>
@@ -76,17 +87,18 @@ function renderizarEstado() {
                       font-size:11px;color:var(--estado-extra)">
             ＋ Item extra — fora do orçamento, necessita ser orçado
           </div>` : ''}
-        <div class="info-grid">
-          ${item.artigo  ? `<div class="info-field"><div class="info-label">Artigo</div><div class="info-val mono">${item.artigo}</div></div>` : ''}
-          ${item.seccao  ? `<div class="info-field"><div class="info-label">Secção</div><div class="info-val">${item.seccao}</div></div>` : ''}
-          ${item.tipo    ? `<div class="info-field"><div class="info-label">Tipo</div><div class="info-val">${item.tipo}</div></div>` : ''}
-          ${item.dims    ? `<div class="info-field"><div class="info-label">Dimensões</div><div class="info-val mono">${item.dims}</div></div>` : ''}
-          ${item.ref     ? `<div class="info-field"><div class="info-label">Referência</div><div class="info-val mono">${item.ref}</div></div>` : ''}
-          ${item.quant   ? `<div class="info-field"><div class="info-label">Quantidade</div><div class="info-val mono">${item.quant} ${item.unid || ''}</div></div>` : ''}
-          ${item.material? `<div class="info-field info-full"><div class="info-label">Material / Cor</div><div class="info-val">${item.material}</div></div>` : ''}
-          <div class="info-field info-full">
-            <div class="info-label">Descrição</div>
-            <div class="info-val" style="font-size:12px;line-height:1.5">${item.descricao || item.nome || '—'}</div>
+        <div class="orc-info">
+          <div class="orc-row orc-header">
+            <span class="orc-col-art">Artigo</span>
+            <span class="orc-col-desc">Designação dos Trabalhos</span>
+            <span class="orc-col-unid">Unid</span>
+            <span class="orc-col-quant">Quant</span>
+          </div>
+          <div class="orc-row orc-data">
+            <span class="orc-col-art">${item.artigo || '—'}</span>
+            <span class="orc-col-desc">${item.descricao || item.nome || '—'}</span>
+            <span class="orc-col-unid">${item.unid || '—'}</span>
+            <span class="orc-col-quant">${item.quant || '—'}</span>
           </div>
         </div>
       </div>
@@ -119,12 +131,8 @@ function renderizarEstado() {
           placeholder="${item.estado === 'extra'
             ? 'Descreve o item extra e o estado do orçamento…'
             : 'Descreve a alteração: dimensões, material, cor, ferragem…'
-          }">${item.nota || ''}</textarea>
-        <div style="margin-top:8px">
-          <button class="abtn" onclick="guardarNota(document.getElementById('nota-ta').value)">
-            💾 Guardar nota
-          </button>
-        </div>
+          }"
+          onblur="guardarNota(this.value)">${item.nota || ''}</textarea>
       </div>
     </div>` : ''}
     <div class="ec">
@@ -149,12 +157,18 @@ async function definirEstado(novoEstado) {
   await dbEscrever(db, 'itens', itemAtual);
   await carregarItens();
   renderizarEstado();
+  /* flash de confirmação na linha */
+  requestAnimationFrame(() => {
+    const row = document.querySelector('.item-row.selected');
+    if (row) { row.classList.remove('flash-ok'); void row.offsetWidth; row.classList.add('flash-ok'); }
+  });
 }
 
 async function guardarNota(texto) {
   if (!itemAtual) return;
   itemAtual.nota = texto;
   await dbEscrever(db, 'itens', itemAtual);
+  mostrarToast('✓ Guardado');
 }
 
 async function removerItem() {
@@ -162,31 +176,44 @@ async function removerItem() {
   if (!confirm(`Remover "${itemAtual.descricao || itemAtual.nome}"?`)) return;
   await dbApagar(db, 'itens', itemAtual.id);
   itemAtual = null;
+  localStorage.removeItem('ck_itemId');
   await carregarItens();
   renderizarEstadoVazio();
 }
 
-async function adicionarItemExtra() {
-  const input = document.getElementById('add-inp');
-  const valor = input.value.trim();
-  if (!valor || !obraAtual) return;
-  await dbEscrever(db, 'itens', {
-    obraId:    obraAtual.id,
-    artigo:    '',
-    descricao: valor,
-    nome:      valor,
-    tipo:      '',
-    dims:      '',
-    ref:       '',
-    quant:     '',
-    unid:      '',
-    material:  '',
-    seccao:    'Extra',
-    nota:      '',
-    estado:    'extra',
-    criadoEm:  Date.now()
+function abrirModalExtra() {
+  ['ex-art','ex-desc','ex-unid','ex-quant'].forEach(id => {
+    document.getElementById(id).value = '';
   });
-  input.value = '';
+  document.getElementById('modal-extra').classList.add('open');
+  document.getElementById('ex-desc').focus();
+}
+
+function fecharModalExtra() {
+  document.getElementById('modal-extra').classList.remove('open');
+}
+
+async function confirmarItemExtra() {
+  if (!obraAtual) return;
+  const artigo = document.getElementById('ex-art').value.trim();
+  const descricao = document.getElementById('ex-desc').value.trim();
+  const unid  = document.getElementById('ex-unid').value.trim();
+  const quant = document.getElementById('ex-quant').value.trim();
+  if (!descricao) { document.getElementById('ex-desc').focus(); return; }
+  await dbEscrever(db, 'itens', {
+    obraId:   obraAtual.id,
+    artigo,
+    descricao,
+    nome:     descricao,
+    unid,
+    quant:    quant ? parseFloat(quant) : '',
+    tipo: '', dims: '', ref: '', material: '',
+    seccao:   'Extra',
+    nota:     '',
+    estado:   'extra',
+    criadoEm: Date.now()
+  });
+  fecharModalExtra();
   await carregarItens();
 }
 
@@ -204,10 +231,47 @@ function etiquetaEstado(estado) {
 function atualizarSummary() {
   const cont = { pendente: 0, conferido: 0, alteracao: 0, anulado: 0, extra: 0 };
   itensObra.forEach(i => { if (cont[i.estado] !== undefined) cont[i.estado]++; });
+  const total = itensObra.length;
+  const comNota = itensObra.filter(i => i.nota).length;
+
   document.getElementById('s-pend').textContent = cont.pendente;
   document.getElementById('s-conf').textContent = cont.conferido;
   document.getElementById('s-alt').textContent  = cont.alteracao;
   document.getElementById('s-anul').textContent = cont.anulado;
   document.getElementById('s-ext').textContent  = cont.extra;
-  document.getElementById('s-total').textContent = `${itensObra.length} itens`;
+  document.getElementById('s-total').textContent = `${total} itens`;
+
+  /* contagens nos filtros */
+  [
+    ['todos',     'Todos',    total],
+    ['pendente',  'Pendente', cont.pendente],
+    ['conferido', 'Conf.',    cont.conferido],
+    ['alteracao', 'Alt.',     cont.alteracao],
+    ['anulado',   'Anulado',  cont.anulado],
+    ['extra',     'Extra',    cont.extra],
+  ].forEach(([estado, label, count]) => {
+    const btn = document.querySelector(`.fbtn[onclick*="'${estado}'"]`);
+    if (btn) btn.textContent = count ? `${label} (${count})` : label;
+  });
+  const notasBtn = document.getElementById('fbtn-notas');
+  if (notasBtn) notasBtn.textContent = comNota ? `📝 Com nota (${comNota})` : '📝 Com nota';
+
+  /* guardar progresso no cache para todas as obras */
+  if (obraAtual) {
+    const prog = JSON.parse(localStorage.getItem('ck_prog') || '{}');
+    prog[obraAtual.id] = { conf: cont.conferido, total };
+    localStorage.setItem('ck_prog', JSON.stringify(prog));
+    renderizarObras(document.getElementById('search-obras')?.value || '');
+  }
+
+  /* breadcrumb com progresso vivo */
+  if (obraAtual) {
+    const pct = total ? Math.round(cont.conferido / total * 100) : 0;
+    let extra = '';
+    if (cont.alteracao) extra += ` · <span style="color:var(--estado-alteracao)">${cont.alteracao} alt.</span>`;
+    if (cont.pendente)  extra += ` · <span style="color:var(--text3)">${cont.pendente} pend.</span>`;
+    document.getElementById('breadcrumb').innerHTML =
+      `<span>${obraAtual.codigo}</span> › ${obraAtual.nome}` +
+      `<span style="margin-left:10px;color:var(--gold2);font-weight:600">${pct}%</span>${extra}`;
+  }
 }

@@ -1,2 +1,7 @@
 # Local Netlify folder
 .netlify
+
+.vercel
+
+# Agent tooling (não faz parte da app)
+.agent/

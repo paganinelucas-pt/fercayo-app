@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(netlify link:*)",
-      "Bash(netlify unlink:*)"
+      "Bash(netlify unlink:*)",
+      "Bash(vercel login:*)",
+      "Bash(vercel)",
+      "Bash(cmd /c \"start https://vercel.com/login\")",
+      "Bash(vercel --yes)",
+      "Bash(vercel whoami:*)",
+      "Bash(vercel --yes --prod)"
     ]
   }
 }

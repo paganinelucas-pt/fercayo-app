@@ -103,12 +103,21 @@ async function gerarPDF() {
   @page { size: A4; margin: 12mm 10mm 14mm 10mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Calibri, Arial, sans-serif; font-size: 9pt; color: #111; background: #fff; }
-  .cabecalho { border-bottom: 2px solid #333E48; padding-bottom: 8px; margin-bottom: 8px; }
-  .cab-top   { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .cab-logo  { font-size: 14pt; font-weight: 700; color: #333E48; letter-spacing: 2px; }
-  .cab-sub   { font-size: 7pt; color: #6A7079; letter-spacing: 2px; }
-  .cab-obra  { font-size: 12pt; font-weight: 700; color: #333E48; margin-bottom: 2px; }
-  .cab-meta  { font-size: 8pt; color: #6A7079; display: flex; gap: 16px; flex-wrap: wrap; }
+  /* Cabeçalho estilo ORC */
+  .cabecalho { margin-bottom: 10px; }
+  .cab-top   { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .cab-esq   { display: flex; flex-direction: column; }
+  .cab-logo  { font-size: 16pt; font-weight: 700; color: #333E48; letter-spacing: 3px; line-height: 1.1; }
+  .cab-sub   { font-size: 7pt; color: #AF7C34; letter-spacing: 3px; font-weight: 600; }
+  .cab-ref   { text-align: right; }
+  .cab-ref-row { display: flex; justify-content: flex-end; gap: 8px; font-size: 9pt; line-height: 1.8; }
+  .cab-ref-lbl { font-weight: 700; color: #333E48; text-transform: uppercase; letter-spacing: .5px; }
+  .cab-ref-val { color: #AF7C34; font-weight: 700; font-family: monospace; }
+  .cab-line  { border-bottom: 2px solid #333E48; margin-bottom: 8px; }
+  .cab-meta-bloco { background: #f8f8f8; border: 1px solid #e8e8e8; border-radius: 3px; padding: 5px 10px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px 20px; }
+  .cab-meta-row { display: flex; gap: 6px; font-size: 8pt; }
+  .cab-meta-lbl { color: #6A7079; text-transform: uppercase; font-size: 7pt; letter-spacing: .5px; width: 40px; flex-shrink: 0; padding-top: 1px; }
+  .cab-meta-val { color: #222; font-weight: 600; }
   .resumo { display: flex; gap: 6px; margin-bottom: 8px; }
   .res    { flex: 1; border: 1px solid #ddd; border-radius: 4px; padding: 5px 8px; text-align: center; }
   .res-n  { font-size: 14pt; font-weight: 700; }
@@ -145,20 +154,31 @@ async function gerarPDF() {
   .ass-papel     { font-size: 7.5pt; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; }
   .ass-linha     { border-bottom: 1px solid #333; height: 24px; margin: 12px 0 3px; }
   .ass-data      { font-size: 7pt; color: #aaa; }
-  .rodape { margin-top: 10px; border-top: 1px solid #eee; padding-top: 5px; display: flex; justify-content: space-between; font-size: 7pt; color: #bbb; }
+  .rodape { margin-top: 10px; border-top: 1px solid #333E48; padding-top: 5px; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 7pt; color: #6A7079; }
   @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 </style>
 </head>
 <body>
   <div class="cabecalho">
     <div class="cab-top">
-      <span class="cab-logo">FERCAYO</span>
-      <span class="cab-sub">CARPINTARIAS</span>
+      <div class="cab-esq">
+        <span class="cab-logo">FERCAYO</span>
+        <span class="cab-sub">CARPINTARIAS</span>
+      </div>
+      <div class="cab-ref">
+        <div class="cab-ref-row">
+          <span class="cab-ref-lbl">ORC:</span>
+          <span class="cab-ref-val">${obra.orc || obra.codigo}</span>
+        </div>
+        <div class="cab-ref-row">
+          <span class="cab-ref-lbl">DATA:</span>
+          <span class="cab-ref-val">${hoje}</span>
+        </div>
+      </div>
     </div>
-    <div class="cab-obra">${obra.codigo} · ${obra.nome}</div>
-    <div class="cab-meta">
-      ${obra.orc ? `<span>ORC: <b>${obra.orc}</b></span>` : ''}
-      <span>Data: <b>${hoje}</b></span>
+    <div class="cab-line"></div>
+    <div class="cab-meta-bloco">
+      <div class="cab-meta-row"><span class="cab-meta-lbl">Obra</span><span class="cab-meta-val">${obra.codigo} · ${obra.nome}</span></div>
     </div>
   </div>
   <div class="resumo">
@@ -198,9 +218,11 @@ async function gerarPDF() {
     </div>
   </div>
   <div class="rodape">
-    <span>Fercayo · Carpintarias, Lda · NIPC 517 016 338</span>
-    <span>Rua Manuel José Moreira, 835 · 4570-366 Laúndos, Póvoa de Varzim</span>
-    <span>geral@fercayo.pt · 252 601 189</span>
+    <span>Fercayo - Carpintarias, Lda.</span>
+    <span>Rua Manuel José Moreira nº 835, 4570-366 Laúndos, Póvoa de Varzim</span>
+    <span>NIPC: 517 016 338</span>
+    <span>geral@fercayo.pt</span>
+    <span>tlf: 252 105 922</span>
   </div>
 </body></html>`;
   const janela = window.open('', '_blank');

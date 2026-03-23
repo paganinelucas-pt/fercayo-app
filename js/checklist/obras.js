@@ -9,13 +9,31 @@ function renderizarObras(filtro = '') {
     o.codigo.toLowerCase().includes(termo) ||
     o.nome.toLowerCase().includes(termo)
   );
-  document.getElementById('lista-obras').innerHTML = lista.map(obra => `
-    <div class="obra-item ${obraAtual?.id === obra.id ? 'selected' : ''}"
-         onclick="selecionarObra('${obra.id}')">
-      <div class="obra-cod">${obra.codigo}${obra.orc ? ' · ' + obra.orc : ''}</div>
-      <div class="obra-nm">${obra.nome}</div>
-    </div>
-  `).join('');
+  const prog = JSON.parse(localStorage.getItem('ck_prog') || '{}');
+  document.getElementById('lista-obras').innerHTML = lista.map(obra => {
+    const isAtual = obraAtual?.id === obra.id;
+    const p = prog[obra.id];
+    let progHTML = '';
+    if (p && p.total > 0) {
+      const pct = Math.round(p.conf / p.total * 100);
+      const cor = pct === 100 ? 'var(--estado-conferido)' : 'var(--gold)';
+      progHTML = `<div class="obra-prog"><div class="obra-prog-fill" style="width:${pct}%;background:${cor}"></div></div>`;
+    }
+    const cod = highlight(obra.codigo, termo);
+    const nm  = highlight(obra.nome, termo);
+    return `
+      <div class="obra-item ${isAtual ? 'selected' : ''}" onclick="selecionarObra('${obra.id}')" data-obra-id="${obra.id}">
+        <div class="obra-cod">${cod}${obra.orc ? ' · ' + obra.orc : ''}</div>
+        <div class="obra-nm">${nm}</div>
+        ${progHTML}
+      </div>`;
+  }).join('');
+
+  /* scroll para a obra seleccionada */
+  if (obraAtual) {
+    const el = document.querySelector(`[data-obra-id="${obraAtual.id}"]`);
+    el?.scrollIntoView({ block: 'nearest' });
+  }
 }
 
 function filtrarObras(valor) {
@@ -25,6 +43,8 @@ function filtrarObras(valor) {
 async function selecionarObra(id) {
   obraAtual = todasObras.find(o => o.id === id);
   itemAtual = null;
+  localStorage.setItem('ck_obraId', id);
+  localStorage.removeItem('ck_itemId');
   document.getElementById('breadcrumb').innerHTML =
     `<span>${obraAtual.codigo}</span> › ${obraAtual.nome}`;
   document.getElementById('add-row').style.display = 'flex';

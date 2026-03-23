@@ -11,7 +11,6 @@
 
   <div id="topbar">
     <div class="logo">
-      <img class="logo-icon" src="assets/logo.svg" alt="Fercayo">
       <div>
         <div class="logo-text">FERCAYO</div>
         <div class="logo-sub">CARPINTARIAS</div>
@@ -22,11 +21,11 @@
 
     <div id="breadcrumb"><span>Checklist de Orçamentos</span></div>
 
-    <div class="topbar-actions">
-      <button class="btn btn-out btn-sm" onclick="exportarBackup()" title="Exportar todos os dados para ficheiro .json">⬇ Exportar</button>
-      <button class="btn btn-out btn-sm" onclick="document.getElementById('input-importar').click()" title="Restaurar dados a partir de ficheiro .json">⬆ Importar</button>
-      <input type="file" id="input-importar" accept=".json" style="display:none" onchange="importarBackup(event)">
+    <div class="sector-sw">
+      <span class="sector-btn active">Checklist</span>
+      <a class="sector-btn" href="levantamento.html">Levantamento</a>
     </div>
+
   </div>
 
   <div id="layout">
@@ -35,11 +34,11 @@
       <button class="nav-btn active" onclick="mostrarPainel('checklist')" data-p="checklist">
         ☑<span class="tip">Checklist</span>
       </button>
+      <button class="nav-btn" onclick="abrirAta()" data-p="ata">
+        📄<span class="tip">Ata de Reunião</span>
+      </button>
       <button class="nav-btn" onclick="mostrarPainel('extrator')" data-p="extrator">
         ⬆<span class="tip">Importar Itens</span>
-      </button>
-      <button class="nav-btn" onclick="mostrarPainel('relatorio')" data-p="relatorio">
-        ↓<span class="tip">Relatório Campo</span>
       </button>
       <button class="nav-btn" onclick="abrirModal()" data-p="nova">
         ＋<span class="tip">Nova Obra</span>
@@ -50,7 +49,7 @@
 
       <div id="panel-checklist" class="panel active">
 
-        <div id="col-obras">
+        <div id="col-obras" style="width:240px">
           <div class="col-hdr">
             <h3>Obras</h3>
             <span id="cnt-obras" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)"></span>
@@ -58,6 +57,7 @@
           <input type="text" id="search-obras" placeholder="Pesquisar obra…" oninput="filtrarObras(this.value)">
           <div id="lista-obras"></div>
         </div>
+        <div class="col-resize-handle" id="handle-obras" data-col="col-obras"></div>
 
         <div id="col-itens">
           <div class="col-hdr">
@@ -71,6 +71,7 @@
             <button class="fbtn" onclick="setFiltro('alteracao', this)">Alteração</button>
             <button class="fbtn" onclick="setFiltro('anulado', this)">Anulado</button>
             <button class="fbtn" onclick="setFiltro('extra', this)">Extra</button>
+            <button class="fbtn" id="fbtn-notas" onclick="toggleFiltroNotas(this)">📝 Com nota</button>
           </div>
           <div id="lista-itens">
             <div class="empty-state">
@@ -79,11 +80,11 @@
             </div>
           </div>
           <div class="add-row" id="add-row" style="display:none">
-            <input class="add-inp" id="add-inp" placeholder="Item extra (fora de ORC)…"
-              onkeydown="if(event.key==='Enter') adicionarItemExtra()">
-            <button class="btn btn-gold btn-sm" onclick="adicionarItemExtra()">＋</button>
+            <button class="btn btn-gold btn-sm" style="width:100%;justify-content:center"
+              onclick="abrirModalExtra()">＋ Art. Extra</button>
           </div>
         </div>
+        <div class="col-resize-handle" id="handle-itens" data-col="col-itens"></div>
 
         <div id="col-estado">
           <div id="estado-hdr"><h3>Estado do Item</h3></div>
@@ -187,39 +188,129 @@
         </div>
       </div>
 
-      <div id="panel-relatorio" class="panel">
-        <div id="rel-inner">
 
+      <!-- Panel: Ata de Reunião -->
+      <div id="panel-ata" class="panel" style="flex-direction:row">
+        <div class="ata-form-col">
           <div>
-            <div style="font-size:18px;font-weight:700;color:var(--gold2)">Relatório de Campo</div>
-            <div style="font-size:12px;color:var(--text3);margin-top:4px">
-              Folha de trabalho para obra ou reunião · optimizada para impressão
+            <div style="font-size:16px;font-weight:700;color:var(--gold2)">📄 Ata de Reunião</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px">Preenche os campos — o PDF actualiza em tempo real</div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr">Reunião</div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div><div class="mlabel">Data</div><input class="minp" id="ata-data" type="date" oninput="atualizarPreviewAta()"></div>
+                <div><div class="mlabel">Hora</div><input class="minp" id="ata-hora" type="time" oninput="atualizarPreviewAta()"></div>
+              </div>
+              <div><div class="mlabel">Local</div><input class="minp" id="ata-local" placeholder="Ex: Obra · Rua Principal, Lisboa" oninput="atualizarPreviewAta()"></div>
+              <div><div class="mlabel">Assunto</div><input class="minp" id="ata-assunto" placeholder="Ex: Conferência ORC" oninput="atualizarPreviewAta()"></div>
+              <div><div class="mlabel">Nº ORC</div><input class="minp" id="ata-orc-edit" placeholder="Ex: 1101_25_V05" oninput="atualizarOrcObra(this.value)"></div>
             </div>
           </div>
 
           <div class="card">
-            <div class="card-hdr">Selecionar Obra</div>
-            <div class="card-body">
-              <div class="obra-search-wrap">
-                <input class="obra-search-inp" id="rel-search"
-                  placeholder="Pesquisar obra por código ou nome…"
-                  oninput="filtrarDropdownObra('rel')" onfocus="abrirDropdown('rel')"
-                  autocomplete="off">
-                <div class="obra-dropdown" id="rel-drop"></div>
+            <div class="card-hdr">Obra</div>
+            <div class="card-body"><div id="ata-obra-info"></div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr">Participantes</div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+              <div class="part-tags" id="ata-part-tags"></div>
+              <div style="display:flex;gap:6px">
+                <input class="minp" id="ata-part-inp" placeholder="Adicionar participante…" style="flex:1"
+                  onkeydown="if(event.key==='Enter')adicionarParticipante()">
+                <button class="btn btn-gold btn-sm" onclick="adicionarParticipante()">＋</button>
               </div>
-              <div id="rel-obra-tag" style="display:none"></div>
             </div>
           </div>
 
-          <div class="card" id="rel-resumo-card" style="display:none">
-            <div class="card-hdr">Resumo</div>
-            <div class="card-body" id="rel-resumo-body"></div>
+          <div class="card">
+            <div class="card-hdr">Itens a incluir</div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <button class="ata-ftoggle active" data-estado="pendente"  onclick="toggleAtaEstado('pendente',this)">○ Pendente</button>
+                <button class="ata-ftoggle active" data-estado="conferido" onclick="toggleAtaEstado('conferido',this)">✔ Conferido</button>
+                <button class="ata-ftoggle active" data-estado="alteracao" onclick="toggleAtaEstado('alteracao',this)">⚠ Alteração</button>
+                <button class="ata-ftoggle active" data-estado="anulado"   onclick="toggleAtaEstado('anulado',this)">✕ Anulado</button>
+                <button class="ata-ftoggle active" data-estado="extra"     onclick="toggleAtaEstado('extra',this)">＋ Extra</button>
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;color:var(--text2)">
+                <input type="checkbox" id="ata-notas" onchange="ataApenasComNotas=this.checked;atualizarPreviewAta()">
+                Apenas itens com notas
+              </label>
+            </div>
           </div>
 
-          <div id="rel-acao" style="display:none">
-            <button class="btn btn-gold" onclick="gerarPDF()">🖨 Imprimir Folha de Campo</button>
+          <div class="card">
+            <div class="card-hdr">Observações Gerais</div>
+            <div class="card-body">
+              <textarea class="nota-ta" id="ata-obs" placeholder="Notas gerais da reunião, próximos passos…" oninput="atualizarPreviewAta()"></textarea>
+            </div>
           </div>
 
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-gold" style="flex:1" onclick="imprimirAta()">🖨 Imprimir / Guardar PDF</button>
+            <button class="btn btn-out" onclick="mostrarPainel('checklist')">← Voltar</button>
+          </div>
+        </div>
+
+        <div class="ata-preview-col">
+          <div class="ata-preview-hdr">
+            <span>Pré-visualização · A4</span>
+            <span style="color:var(--gold2);font-size:11px">✓ Actualiza em tempo real</span>
+          </div>
+          <div class="ata-scroll-wrap" id="ata-printable">
+            <div class="ata-page">
+
+              <!-- Cabeçalho estilo ORC -->
+              <div class="ata-cabecalho">
+                <div class="ata-cab-logo">
+                  <div>
+                    <div class="ata-logo-text">FERCAYO</div>
+                    <div style="font-size:7px;letter-spacing:3px;color:#AF7C34;font-weight:600">CARPINTARIAS</div>
+                  </div>
+                </div>
+                <div class="ata-cab-ref">
+                  <div class="ata-cab-ref-row">
+                    <span class="ata-cab-lbl">DATA:</span>
+                    <span class="ata-cab-val" id="ata-prev-data">—</span>
+                  </div>
+                </div>
+              </div>
+              <div class="ata-cab-line"></div>
+
+              <!-- Bloco de meta info -->
+              <div class="ata-meta-bloco">
+                <div class="ata-meta-row"><span class="ata-meta-lbl">Assunto</span><span class="ata-meta-val" id="ata-prev-assunto">—</span></div>
+                <div class="ata-meta-row"><span class="ata-meta-lbl">Hora</span><span class="ata-meta-val" id="ata-prev-hora">—</span></div>
+                <div class="ata-meta-row"><span class="ata-meta-lbl">Local</span><span class="ata-meta-val" id="ata-prev-local">—</span></div>
+                <div class="ata-meta-row"><span class="ata-meta-lbl">Obra</span><span class="ata-meta-val" id="ata-prev-obra">—</span></div>
+                <div class="ata-meta-row"><span class="ata-meta-lbl">ORC</span><span class="ata-meta-val" id="ata-prev-orc">—</span></div>
+                <div class="ata-meta-row"><span class="ata-meta-lbl">Participantes</span><span class="ata-meta-val" id="ata-prev-partic">—</span></div>
+              </div>
+
+              <div class="ata-section-title">Itens do Orçamento</div>
+              <div id="ata-prev-itens"></div>
+              <div id="ata-prev-obs-wrap" style="display:none">
+                <div class="ata-section-title" style="margin-top:16px">Observações</div>
+                <div class="ata-obs-box" id="ata-prev-obs"></div>
+              </div>
+              <div class="ata-section-title" style="margin-top:30px">Assinaturas</div>
+              <div class="ata-assinaturas" id="ata-assinaturas"></div>
+
+              <!-- Rodapé estilo ORC -->
+              <div class="ata-rodape">
+                <span>Fercayo - Carpintarias, Lda.</span>
+                <span>Rua Manuel José Moreira nº 835, 4570-366 Laúndos, Póvoa de Varzim</span>
+                <span>NIPC: 517 016 338</span>
+                <span>geral@fercayo.pt</span>
+                <span>tlf: 252 105 922</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -277,6 +368,36 @@
     </div>
   </div>
 
+  <!-- Modal: Art. Extra -->
+  <div class="modal-overlay" id="modal-extra" onclick="if(event.target===this)fecharModalExtra()">
+    <div class="modal">
+      <h3>＋ Artigo Extra</h3>
+      <div style="font-size:11px;color:var(--text3);margin:-8px 0 14px">Item fora de ORC · será marcado como Extra</div>
+      <div class="mfield">
+        <div class="mlabel">Artigo</div>
+        <input class="minp" id="ex-art" placeholder="Ex: A01 ou deixa vazio">
+      </div>
+      <div class="mfield">
+        <div class="mlabel">Designação dos Trabalhos</div>
+        <input class="minp" id="ex-desc" placeholder="Descrição do item extra…">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="mfield">
+          <div class="mlabel">Unid</div>
+          <input class="minp" id="ex-unid" placeholder="Ex: un, ml, m2, vg">
+        </div>
+        <div class="mfield">
+          <div class="mlabel">Quant</div>
+          <input class="minp" id="ex-quant" placeholder="Ex: 1" type="number" min="0" step="any">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-out" onclick="fecharModalExtra()">Cancelar</button>
+        <button class="btn btn-gold" onclick="confirmarItemExtra()">＋ Adicionar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -285,14 +406,16 @@
   <!-- Data -->
   <script src="js/data/obras-default.js"></script>
   <script src="js/data/seed-283-26.js"></script>
+  <script src="js/data/seed-301-26.js"></script>
+  <script src="js/data/seed-286-26.js"></script>
   <!-- Checklist modules (ordem de dependência) -->
   <script src="js/checklist/state.js"></script>
-  <script src="js/checklist/backup.js"></script>
   <script src="js/checklist/obras.js"></script>
   <script src="js/checklist/itens.js"></script>
   <script src="js/checklist/importar.js"></script>
-  <script src="js/checklist/relatorio.js"></script>
+  <script src="js/checklist/ata.js"></script>
   <script src="js/checklist/db-init.js"></script>
   <script src="js/checklist/app.js"></script>
+  <div id="toast"></div>
 </body>
 </html>
