@@ -8,7 +8,12 @@
       "Bash(cmd /c \"start https://vercel.com/login\")",
       "Bash(vercel --yes)",
       "Bash(vercel whoami:*)",
-      "Bash(vercel --yes --prod)"
+      "Bash(vercel --yes --prod)",
+      "Bash(vercel --version)",
+      "Bash(vercel inspect:*)",
+      "Bash(vercel --prod)",
+      "Bash(vercel git:*)",
+      "Bash(vercel project:*)"
     ]
   }
 }
