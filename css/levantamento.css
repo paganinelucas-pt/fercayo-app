@@ -457,6 +457,97 @@ body {
   padding: 0 20px;
 }
 
+/* ── Formulários de Medição ──────────────────────────── */
+.med-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.med-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+.med-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.med-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text3);
+}
+.med-inp {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  outline: none;
+  width: 100%;
+  transition: border-color .15s;
+}
+.med-inp:focus { border-color: var(--gold2); }
+.med-inp::placeholder { color: var(--text3); }
+.med-inp::-webkit-inner-spin-button { opacity: .4; }
+
+.med-toggle-group {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.med-toggle {
+  padding: 4px 9px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  background: none;
+  color: var(--text3);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all .12s;
+  white-space: nowrap;
+}
+.med-toggle:hover  { border-color: var(--gold2); color: var(--gold2); }
+.med-toggle.active { background: rgba(175,124,52,.15); border-color: var(--gold2); color: var(--gold2); font-weight: 600; }
+
+.med-foto-placeholder {
+  background: var(--bg3);
+  border: 1px dashed var(--border2);
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 11px;
+}
+
+/* ── Toast ───────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  opacity: 0;
+  transition: all .25s;
+  pointer-events: none;
+  z-index: 9000;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* ── SCROLLBAR ───────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }

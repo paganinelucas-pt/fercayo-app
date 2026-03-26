@@ -86,6 +86,8 @@ function renderizarDetalhe() {
         </div>
       </div>` : ''}
 
+    ${renderizarFormMedicao(a)}
+
     <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
       <button class="btn btn-gold btn-sm"
         onclick="setModo('pin');selecionarArtigo('${a.id}')"
