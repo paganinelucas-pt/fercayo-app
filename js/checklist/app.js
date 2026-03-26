@@ -112,4 +112,4 @@ document.addEventListener('click', (e) => {
 });
 
 /* ── Arranque ── */
-iniciar();
+iniciarAuth(iniciar);

@@ -111,7 +111,8 @@ document.addEventListener('click', e => {
 document.getElementById('planta-wrap').addEventListener('click', handlePlantaClick);
 
 /* ── Arranque ──────────────────────────────────────────── */
-iniciar().then(async () => {
+iniciarAuth(async () => {
+  await iniciar();
   setModo('pin');
   /* auto-seleccionar a obra activa no Checklist */
   const savedId = localStorage.getItem('ck_obraId');

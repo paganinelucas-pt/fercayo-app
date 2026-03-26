@@ -6,8 +6,34 @@
   <title>Fercayo · Levantamento</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/levantamento.css">
+  <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
+
+  <!-- ── LOGIN OVERLAY ──────────────────────────────────────────── -->
+  <div id="login-overlay" style="display:flex">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-text">FERCAYO</div>
+        <div class="logo-sub">CARPINTARIAS</div>
+      </div>
+      <div class="login-title">Acesso à Aplicação</div>
+      <div class="login-field">
+        <div class="mlabel">Email</div>
+        <input class="minp" id="login-email" type="email" placeholder="email@fercayo.pt"
+          onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+      </div>
+      <div class="login-field">
+        <div class="mlabel">Password</div>
+        <input class="minp" id="login-pass" type="password" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')fazerLogin()">
+      </div>
+      <div id="login-err" class="login-err"></div>
+      <button class="btn btn-gold" id="login-btn" onclick="fazerLogin()" style="width:100%;justify-content:center">Entrar</button>
+    </div>
+  </div>
+
+  <div id="app-root" style="display:none">
 
   <!-- ── TOPBAR ──────────────────────────────────────── -->
   <div id="topbar">
@@ -29,6 +55,13 @@
     <div class="topbar-actions">
       <button class="btn btn-gold btn-sm" onclick="exportarPDF()">🖨 Exportar PDF</button>
     </div>
+
+    <div class="user-info">
+      <span id="user-badge" class="user-badge">—</span>
+      <span id="user-email"></span>
+      <button class="btn btn-out btn-sm" onclick="fazerLogout()">Sair</button>
+    </div>
+
   </div>
 
   <!-- ── LAYOUT ──────────────────────────────────────── -->
@@ -206,11 +239,15 @@
   <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  </div><!-- /app-root -->
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <!-- Shared -->
   <script src="js/shared/db.js"></script>
+  <script src="js/shared/auth.js"></script>
   <!-- Data -->
   <script src="js/data/obras-default.js"></script>
   <!-- Levantamento modules -->

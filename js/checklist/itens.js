@@ -135,7 +135,7 @@ function renderizarEstado() {
           onblur="guardarNota(this.value)">${item.nota || ''}</textarea>
       </div>
     </div>` : ''}
-    <div class="ec">
+    <div class="ec diretor-only">
       <div class="ec-hdr">Ações Rápidas</div>
       <div class="ec-body">
         <div class="acao-row">
@@ -153,6 +153,7 @@ function renderizarEstado() {
 
 async function definirEstado(novoEstado) {
   if (!itemAtual) return;
+  if (papelAtual !== 'diretor' && papelAtual !== 'gestao') return;
   itemAtual.estado = novoEstado;
   await dbEscrever(db, 'itens', itemAtual);
   await carregarItens();
@@ -166,6 +167,7 @@ async function definirEstado(novoEstado) {
 
 async function guardarNota(texto) {
   if (!itemAtual) return;
+  if (papelAtual !== 'diretor' && papelAtual !== 'gestao') return;
   itemAtual.nota = texto;
   await dbEscrever(db, 'itens', itemAtual);
   mostrarToast('✓ Guardado');
