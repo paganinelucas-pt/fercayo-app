@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fercayo · Consulta</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/checklist.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <!-- ── LOGIN OVERLAY ──────────────────────────────────────────── -->
+  <div id="login-overlay" style="display:flex">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-text">FERCAYO</div>
+        <div class="logo-sub">CARPINTARIAS</div>
+      </div>
+      <div class="login-title">Acesso à Aplicação</div>
+      <div class="login-field">
+        <div class="mlabel">Email</div>
+        <input class="minp" id="login-email" type="email" placeholder="email@fercayo.pt"
+          onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+      </div>
+      <div class="login-field">
+        <div class="mlabel">Password</div>
+        <input class="minp" id="login-pass" type="password" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')fazerLogin()">
+      </div>
+      <div id="login-err" class="login-err"></div>
+      <button class="btn btn-gold" id="login-btn" onclick="fazerLogin()" style="width:100%;justify-content:center">Entrar</button>
+    </div>
+  </div>
+
+  <div id="app-root" style="display:none">
+
+  <!-- ── TOPBAR ──────────────────────────────────────── -->
+  <div id="topbar">
+    <div class="logo">
+      <div>
+        <div class="logo-text">FERCAYO</div>
+        <div class="logo-sub">CARPINTARIAS</div>
+      </div>
+    </div>
+
+    <div class="topbar-sep"></div>
+    <div id="breadcrumb"><span id="bc-obra">Consulta</span></div>
+
+    <div id="obra-tabs" style="display:none">
+      <a class="obra-tab" href="checklist.html">A · Reunião</a>
+      <a class="obra-tab" href="levantamento.html">B · Levantamento</a>
+      <span class="obra-tab active">C · Consulta</span>
+    </div>
+
+    <div class="user-info">
+      <span id="user-badge" class="user-badge">—</span>
+      <span id="user-email"></span>
+      <button class="btn btn-out btn-sm" onclick="fazerLogout()">Sair</button>
+    </div>
+
+  </div>
+
+  <!-- ── CONTEÚDO PLACEHOLDER ──────────────────────────── -->
+  <div style="display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:var(--text3)">
+    <div style="font-size:40px;opacity:.3">📋</div>
+    <div style="font-size:14px;font-weight:500;color:var(--text2)">C · Consulta</div>
+    <div style="font-size:12px">Em desenvolvimento — disponível na próxima feature</div>
+    <div style="margin-top:8px;display:flex;gap:8px">
+      <a href="checklist.html" class="btn btn-out btn-sm">← A · Reunião</a>
+      <a href="levantamento.html" class="btn btn-out btn-sm">B · Levantamento</a>
+    </div>
+  </div>
+
+  </div><!-- /app-root -->
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <!-- Shared -->
+  <script src="js/shared/db.js"></script>
+  <script src="js/shared/auth.js"></script>
+  <!-- Arranque -->
+  <script>
+    function iniciar() {
+      const obraId = localStorage.getItem('ck_obraId');
+      if (!obraId) return;
+
+      document.getElementById('obra-tabs').style.display = 'flex';
+
+      abrirDB().then(db => {
+        db.collection('obras').doc(obraId).get().then(doc => {
+          if (doc.exists) {
+            const o = doc.data();
+            document.getElementById('bc-obra').innerHTML =
+              `<span>${o.codigo}</span> › ${o.nome}`;
+          }
+        });
+      });
+    }
+    iniciarAuth(iniciar);
+  </script>
+
+</body>
+</html>

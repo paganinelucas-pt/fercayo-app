@@ -52,6 +52,7 @@ async function selecionarObraLev(id) {
   document.getElementById('bc-obra').textContent = `${obraAtual.codigo} · ${obraAtual.nome}`;
   document.getElementById('lista-obra-sub').textContent = `${obraAtual.codigo} · ${obraAtual.nome}`;
 
+  document.getElementById('obra-tabs').style.display = 'flex';
   await carregarArtigos();
   await carregarPins();
   carregarPlanta();
@@ -66,6 +67,7 @@ function limparObraLev() {
 
   document.getElementById('obra-tag-lev').style.display = 'none';
   document.getElementById('bc-obra').textContent = 'Levantamento';
+  document.getElementById('obra-tabs').style.display = 'none';
   document.getElementById('lista-obra-sub').textContent = 'Selecciona uma obra';
   document.getElementById('planta-img').style.display   = 'none';
   document.getElementById('planta-empty').style.display = 'flex';
