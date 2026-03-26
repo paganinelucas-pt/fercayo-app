@@ -107,7 +107,7 @@ function processarTextoPDF() {
       unid,
       material:  '',
       seccao:    '',
-      nota:      '',
+      nota_reuniao: '',
       estado:    'pendente',
       criadoEm:  Date.now()
     });
