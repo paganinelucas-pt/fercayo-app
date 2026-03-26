@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    Fercayo · Autenticação Firebase
-   Usado por: checklist.html, levantamento.html
+   Usado por: checklist.html, levantamento.html, consulta.html
    ═══════════════════════════════════════════════════════════════ */
 
 let papelAtual       = null;
@@ -42,17 +42,14 @@ function _aplicarPermissoes(papel) {
   const emailEl = document.getElementById('user-email');
   if (emailEl && utilizadorAtual) emailEl.textContent = utilizadorAtual.email;
 
-  /* Preparador não tem acesso a A nem B (aba C ainda não existe) */
+  /* Preparador só tem acesso à Aba C · Consulta */
   if (papel === 'preparador') {
-    document.getElementById('app-root').innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:center;height:100%;' +
-      'flex-direction:column;gap:14px;color:var(--text2)">' +
-      '<div style="font-size:40px">🔒</div>' +
-      '<div style="font-size:14px;font-weight:500">Sem acesso a esta área.</div>' +
-      '<button class="btn btn-out" onclick="fazerLogout()" style="margin-top:4px">Sair</button>' +
-      '</div>';
-    _esconderLoginOverlay();
-    return true;
+    const naConsulta = window.location.pathname.includes('consulta');
+    if (!naConsulta) {
+      window.location.href = 'consulta.html';
+      return true;
+    }
+    return false; /* deixa passar em consulta.html */
   }
   return false;
 }

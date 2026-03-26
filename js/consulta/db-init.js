@@ -1,5 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   Fercayo · Dados: Obras padrão (seed inicial)
+   Fercayo · Consulta · Inicialização do DB
    ═══════════════════════════════════════════════════════════════ */
 
-const OBRAS_DEFAULT = [];
+async function iniciar() {
+  db = await abrirDB();
+  todasObras = await dbLerTudo(db, 'obras');
+  todasObras.sort((a, b) => a.codigo.localeCompare(b.codigo));
+}

@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/checklist.css">
   <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/consulta.css">
 </head>
 <body>
 
@@ -53,6 +54,10 @@
       <span class="obra-tab active">C · Consulta</span>
     </div>
 
+    <div class="topbar-actions">
+      <button class="btn btn-gold btn-sm" onclick="exportarResumoPreparador()" id="btn-resumo-pdf" style="display:none">🖨 Resumo PDF</button>
+    </div>
+
     <div class="user-info">
       <span id="user-badge" class="user-badge">—</span>
       <span id="user-email"></span>
@@ -61,16 +66,65 @@
 
   </div>
 
-  <!-- ── CONTEÚDO PLACEHOLDER ──────────────────────────── -->
-  <div style="display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:var(--text3)">
-    <div style="font-size:40px;opacity:.3">📋</div>
-    <div style="font-size:14px;font-weight:500;color:var(--text2)">C · Consulta</div>
-    <div style="font-size:12px">Em desenvolvimento — disponível na próxima feature</div>
-    <div style="margin-top:8px;display:flex;gap:8px">
-      <a href="checklist.html" class="btn btn-out btn-sm">← A · Reunião</a>
-      <a href="levantamento.html" class="btn btn-out btn-sm">B · Levantamento</a>
+  <!-- ── LAYOUT ──────────────────────────────────────── -->
+  <div id="layout">
+    <div id="main">
+
+      <!-- col itens -->
+      <div id="col-itens">
+
+        <!-- Pesquisa de obra -->
+        <div class="col-hdr">
+          <div class="obra-search-wrap" style="flex:1">
+            <input class="obra-search-inp" id="cons-search"
+              placeholder="Seleccionar obra…"
+              oninput="filtrarDropdownObra()" onfocus="abrirDropdownConsulta()"
+              autocomplete="off">
+            <div class="obra-dropdown" id="cons-drop"></div>
+          </div>
+        </div>
+
+        <!-- Tag da obra seleccionada -->
+        <div id="obra-tag-cons" style="display:none;padding:6px 10px;border-bottom:1px solid var(--border)"></div>
+
+        <!-- Filtros de estado -->
+        <div id="estado-filtros">
+          <button class="filtro-chip active" data-estado="" onclick="setFiltroEstado('')">Todos</button>
+          <button class="filtro-chip" data-estado="pendente"  onclick="setFiltroEstado('pendente')">○ Pend.</button>
+          <button class="filtro-chip" data-estado="conferido" onclick="setFiltroEstado('conferido')">✔ Conf.</button>
+          <button class="filtro-chip" data-estado="alteracao" onclick="setFiltroEstado('alteracao')">⚠ Alt.</button>
+          <button class="filtro-chip" data-estado="extra"     onclick="setFiltroEstado('extra')">＋ Extra</button>
+          <button class="filtro-chip" data-estado="anulado"   onclick="setFiltroEstado('anulado')">✕ Anul.</button>
+        </div>
+
+        <!-- Filtrar itens -->
+        <input type="text" id="search-itens" placeholder="Filtrar itens…"
+          oninput="filtrarItens(this.value)">
+
+        <!-- Lista de itens -->
+        <div id="lista-itens">
+          <div class="empty-state">
+            <div style="font-size:28px;opacity:.3">📋</div>
+            Selecciona uma obra
+          </div>
+        </div>
+
+      </div>
+
+      <!-- col detalhe (só leitura) -->
+      <div id="col-detalhe">
+        <div id="detalhe-cons">
+          <div class="empty-state" style="height:160px">
+            <div style="font-size:28px;opacity:.3">📋</div>
+            Selecciona um item para ver o detalhe
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+
+  <div id="toast"></div>
 
   </div><!-- /app-root -->
 
@@ -78,29 +132,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <!-- Shared -->
   <script src="js/shared/db.js"></script>
   <script src="js/shared/auth.js"></script>
-  <!-- Arranque -->
-  <script>
-    function iniciar() {
-      const obraId = localStorage.getItem('ck_obraId');
-      if (!obraId) return;
-
-      document.getElementById('obra-tabs').style.display = 'flex';
-
-      abrirDB().then(db => {
-        db.collection('obras').doc(obraId).get().then(doc => {
-          if (doc.exists) {
-            const o = doc.data();
-            document.getElementById('bc-obra').innerHTML =
-              `<span>${o.codigo}</span> › ${o.nome}`;
-          }
-        });
-      });
-    }
-    iniciarAuth(iniciar);
-  </script>
+  <!-- Consulta modules -->
+  <script src="js/consulta/state.js"></script>
+  <script src="js/consulta/db-init.js"></script>
+  <script src="js/consulta/obras.js"></script>
+  <script src="js/consulta/itens.js"></script>
+  <script src="js/consulta/pdf-cons.js"></script>
+  <script src="js/consulta/app.js"></script>
 
 </body>
 </html>

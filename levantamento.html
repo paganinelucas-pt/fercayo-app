@@ -54,7 +54,7 @@
     </div>
 
     <div class="topbar-actions">
-      <button class="btn btn-gold btn-sm" onclick="exportarPDF()">🖨 Exportar PDF</button>
+      <button class="btn btn-gold btn-sm" onclick="exportarFichaLevantamento()" id="btn-ficha-lev" style="display:none">🖨 Ficha PDF</button>
     </div>
 
     <div class="user-info">
@@ -248,18 +248,19 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <!-- Shared -->
   <script src="js/shared/db.js"></script>
   <script src="js/shared/auth.js"></script>
-  <!-- Data -->
-  <script src="js/data/obras-default.js"></script>
   <!-- Levantamento modules -->
   <script src="js/levantamento/state.js"></script>
   <script src="js/levantamento/artigos.js"></script>
   <script src="js/levantamento/planta.js"></script>
+  <script src="js/levantamento/fotos.js"></script>
   <script src="js/levantamento/medicao.js"></script>
   <script src="js/levantamento/detalhe.js"></script>
   <script src="js/levantamento/db-init.js"></script>
+  <script src="js/levantamento/pdf-lev.js"></script>
   <script src="js/levantamento/app.js"></script>
 </body>
 </html>

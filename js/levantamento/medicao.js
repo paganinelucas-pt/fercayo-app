@@ -132,10 +132,20 @@ function renderizarFormMedicao(artigo) {
       <div class="ec-body" style="display:flex;flex-direction:column;gap:10px">
         ${camposHTML}
         <div class="med-field">
-          <div class="med-label">Fotos${notaObrig ? ' *' : ''}
-            <span style="font-size:9px;opacity:.5"> — em breve</span>
+          <div class="med-label">Fotos${notaObrig ? ' *' : ''}</div>
+          <div class="med-fotos-wrap">
+            ${(artigo.fotos || []).map((url, i) => `
+              <div class="med-foto-item">
+                <img src="${url}" class="med-foto-img" onclick="abrirFotoFullscreen(${i})"
+                     title="Clica para ampliar">
+                <button class="med-foto-rm" onclick="removerFotoArtigo(${i})" title="Remover">✕</button>
+              </div>`).join('')}
+            <label class="med-foto-add" title="Adicionar foto">
+              <span>📷</span>
+              <input type="file" accept="image/*" capture="environment"
+                onchange="uploadFotoArtigo(event)" style="display:none">
+            </label>
           </div>
-          <div class="med-foto-placeholder">📷 Upload de fotos disponível em breve</div>
         </div>
         <div class="med-field">
           <div class="med-label">Nota de Levantamento${notaObrig ? ' *' : ''}</div>

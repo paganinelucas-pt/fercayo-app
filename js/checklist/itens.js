@@ -127,7 +127,7 @@ function renderizarEstado() {
           item.estado === 'alteracao' ? 'Nota de Alteração' : 'Nota'}
       </div>
       <div class="ec-body">
-        <textarea class="nota-ta" id="nota-ta"
+        <textarea class="nota-ta nota-reuniao" id="nota-ta"
           placeholder="${item.estado === 'extra'
             ? 'Descreve o item extra e o estado do orçamento…'
             : 'Descreve a alteração: dimensões, material, cor, ferragem…'

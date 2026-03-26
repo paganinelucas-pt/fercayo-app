@@ -140,8 +140,15 @@
 .papel-medidor    .diretor-only { display: none !important; }
 .papel-preparador .diretor-only { display: none !important; }
 
-.papel-medidor .nota-ta {
+/* Nota de Reunião (Aba A) — medidor só lê */
+.papel-medidor .nota-reuniao {
   pointer-events: none;
   opacity: 0.6;
+  cursor: default;
+}
+
+/* Estados de item (Aba A) — medidor não pode clicar */
+.papel-medidor .pip-step {
+  pointer-events: none;
   cursor: default;
 }

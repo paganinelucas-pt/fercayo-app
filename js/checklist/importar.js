@@ -68,31 +68,50 @@ function setModoImport(modo) {
   document.getElementById('tab-json').className = 'mode-btn ' + (isPdf ? 'inactive' : 'active');
 }
 
+function _autoTipo(desc) {
+  const t = desc.toLowerCase();
+  if (/apainelado|painel.*madei|revestim.*madei/.test(t)) return 'apainelado';
+  if (/lambrim|rodap/.test(t))                            return 'lambrim';
+  if (/roup[ae]iro/.test(t))                              return 'roupeiro';
+  if (/cozinha|m[oó]vel.*complex|bancada/.test(t))        return 'cozinha';
+  if (/port[ao]|batente|correr|sanfona|folha.*abri|aro.*porta/.test(t)) return 'porta';
+  return '';
+}
+
 function processarTextoPDF() {
   if (!obraImport) { alert('Seleciona a obra de destino primeiro.'); return; }
   const texto = document.getElementById('txt-pdf').value.trim();
   if (!texto)  { alert('Cola o texto do PDF primeiro.'); return; }
   itensPrevImport = [];
-  const linhas = texto.split('\n').map(l => l.trim()).filter(l => l.length > 5);
+  const linhas = texto.split('\n').map(l => l.trim()).filter(l => l.length > 3);
   const reArtigo = /^(\d+\.\d[\d.]*)/;
+  let seccaoAtual = '';
   for (const linha of linhas) {
     if (/total|iva|preço|fercayo|nipc|email|página|data:|artigo|designação|unid\.|parciais|capital social/i.test(linha)) continue;
     if (/^\d+[,.]?\d*\s*€/.test(linha)) continue;
-    if (linha.length < 8) continue;
     const matchArtigo = linha.match(reArtigo);
-    if (!matchArtigo) continue;
+    if (!matchArtigo) {
+      /* Cabeçalho de secção: linha em MAIÚSCULAS sem código de artigo */
+      if (linha.length >= 4 && /^[A-ZÁÉÍÓÚÂÊÎÔÀÃÕÇÜ\s·&\/–\-_]{4,}$/.test(linha)) {
+        seccaoAtual = linha.trim();
+      }
+      continue;
+    }
+    if (linha.length < 8) continue;
     const artigo = matchArtigo[1];
     const resto  = linha.slice(artigo.length).trim();
+
     const matchDims = resto.match(/(\d{3,4}[xX×]\d{3,4}(?:[xX×]\d{2,4})?(?:mm)?)/);
     const dims = matchDims ? matchDims[1] : '';
     const matchRef = resto.match(/\([-\w]+\)/);
     const ref = matchRef ? matchRef[0] : '';
-    const matchQt = resto.match(/\b(\d+[,.]?\d*)\s*(un|ml|m2|m3)\b/i);
+    const matchQt = resto.match(/\b(\d+[,.]?\d*)\s*(un\.?|vb\.?|ml|m2|m3|m)\b/i);
     const quant = matchQt ? matchQt[1] : '';
-    const unid  = matchQt ? matchQt[2] : '';
+    const unid  = matchQt ? matchQt[2].replace(/\.$/, '') : '';
     let descricao = resto
       .replace(/\b\d+[,.]?\d*\s*€/g, '')
-      .replace(/\b(un|ml|m2|m3)\b.*$/i, '')
+      .replace(/\d[\d.]*,\d{2}\s+\d[\d.]*,\d{2}\s*$/, '')  /* remover colunas de preço */
+      .replace(/\b(\d+[,.]?\d*)\s*(un\.?|vb\.?|ml|m2|m3|m)\b.*$/i, '')
       .trim();
     if (descricao.length < 4) continue;
     itensPrevImport.push({
@@ -100,13 +119,13 @@ function processarTextoPDF() {
       artigo,
       descricao: descricao.substring(0, 150),
       nome:      descricao.substring(0, 150),
-      tipo:      '',
+      tipo:      _autoTipo(descricao),
       dims,
       ref,
       quant,
       unid,
       material:  '',
-      seccao:    '',
+      seccao:    seccaoAtual,
       nota_reuniao: '',
       estado:    'pendente',
       criadoEm:  Date.now()
@@ -135,13 +154,13 @@ function processarJSON() {
     artigo:    it.artigo    || '',
     descricao: it.descricao || it.nome || '',
     nome:      it.descricao || it.nome || '',
-    tipo:      it.tipo      || '',
+    tipo:      it.tipo      || _autoTipo(it.descricao || it.nome || ''),
     dims:      it.dims      || it.dimensoes || '',
     ref:       it.ref       || it.referencia || '',
     quant:     it.quant     || it.quantidade || '',
     unid:      it.unid      || it.unidade    || '',
     material:  it.material  || it.cor        || '',
-    seccao:    it.seccao    || it.secção      || '',
+    seccao:    it.seccao    || it.secção     || '',
     nota:      '',
     estado:    'pendente',
     criadoEm:  Date.now()
