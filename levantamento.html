@@ -106,7 +106,7 @@
           <input type="text" id="search-artigos" class="search-inp"
             placeholder="Filtrar artigos…" oninput="filtrarArtigos(this.value)">
 
-          <div id="lista-artigos" style="flex:1;overflow-y:auto">
+          <div id="lista-artigos" style="flex:1;overflow-y:auto;min-height:0">
             <div class="empty-state">
               <div style="font-size:28px;opacity:.3">📐</div>
               Selecciona uma obra
@@ -179,7 +179,7 @@
               Selecciona um artigo
             </div>
           </div>
-          <div id="detalhe-body" style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+          <div id="detalhe-body" style="flex:1;min-height:0;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
           </div>
         </div>
 
@@ -187,7 +187,7 @@
 
       <!-- ══ PANEL LISTA ═══════════════════════════════ -->
       <div id="panel-lista" class="panel">
-        <div style="flex:1;overflow-y:auto;padding:20px">
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:20px">
           <div style="font-size:16px;font-weight:700;color:var(--gold2);margin-bottom:4px">Lista de Artigos</div>
           <div style="font-size:11px;color:var(--text3);margin-bottom:16px" id="lista-obra-sub">Selecciona uma obra para ver os artigos</div>
           <div id="tabela-artigos">
