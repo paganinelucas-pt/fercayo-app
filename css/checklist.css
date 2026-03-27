@@ -128,16 +128,15 @@ body {
 
 #main {
   flex: 1;
+  min-height: 0;
   display: flex;
   overflow: hidden;
 }
 
 .panel {
   display: none;
-  width: 100%;
-  height: 100%;
 }
-.panel.active { display: flex; }
+.panel.active { display: flex; flex: 1; min-height: 0; overflow: hidden; }
 
 #panel-checklist { flex-direction: row; }
 

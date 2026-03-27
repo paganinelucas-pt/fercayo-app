@@ -111,9 +111,9 @@ body {
 }
 .nav-btn:hover .tip { opacity: 1; }
 
-#main { flex: 1; display: flex; overflow: hidden; }
-.panel { display: none; width: 100%; height: 100%; }
-.panel.active { display: flex; }
+#main { flex: 1; min-height: 0; display: flex; overflow: hidden; }
+.panel { display: none; }
+.panel.active { display: flex; flex: 1; min-height: 0; overflow: hidden; }
 
 /* ── COL ARTIGOS ─────────────────────────────────────── */
 #col-artigos {
