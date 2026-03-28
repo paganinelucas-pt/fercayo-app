@@ -112,6 +112,8 @@ body {
   padding: 12px 0;
   gap: 10px;
   flex-shrink: 0;
+  position: relative;
+  z-index: 200;
 }
 
 .nav-btn {
@@ -148,7 +150,7 @@ body {
   pointer-events: none;
   opacity: 0;
   transition: opacity .15s;
-  z-index: 100;
+  z-index: 300;
 }
 .nav-btn:hover .tip { opacity: 1; }
 
