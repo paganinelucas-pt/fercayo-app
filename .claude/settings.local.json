@@ -4,7 +4,9 @@
       "Bash(wc -l \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app/css\"/*.css)",
       "Bash(grep -l \"href=\"\"css/\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app\"/*.html)",
       "Bash(grep -E \"@import|href.*theme\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app/css/\"*.css)",
-      "Bash(grep -c \"src=\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app\"/*.html)"
+      "Bash(grep -c \"src=\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app\"/*.html)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

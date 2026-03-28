@@ -8,7 +8,21 @@
       "Bash(cmd /c \"start https://vercel.com/login\")",
       "Bash(vercel --yes)",
       "Bash(vercel whoami:*)",
-      "Bash(vercel --yes --prod)"
+      "Bash(vercel --yes --prod)",
+      "Bash(vercel --version)",
+      "Bash(vercel inspect:*)",
+      "Bash(vercel --prod)",
+      "Bash(vercel git:*)",
+      "Bash(vercel project:*)",
+      "Bash(npm list:*)",
+      "Bash(start \"\" \"c:\\\\projetos\\\\fercayo-app\\\\seed.html\")",
+      "Bash(node -e \":*)",
+      "Bash(npx vercel:*)",
+      "Bash(grep -v \"^\\\\s*//\")",
+      "Bash(find /c/projetos/fercayo-app -type f -not -path */.agent/*)",
+      "Bash(find /c/projetos/fercayo-app -not -path \"*/.agent/*\" -not -path \"*/.git/*\" -type f -exec ls -lh {})",
+      "Read(//c/projetos/fercayo-app/{print $5 \"\"\"\"\"\"\"\"/**)",
+      "Bash(sort -k2)"
     ]
   }
 }

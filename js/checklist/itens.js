@@ -15,7 +15,7 @@ function renderizarItens() {
   let itensFiltrados = filtroEstado === 'todos'
     ? itensObra
     : itensObra.filter(i => i.estado === filtroEstado);
-  if (filtroNotas) itensFiltrados = itensFiltrados.filter(i => i.nota);
+  if (filtroNotas) itensFiltrados = itensFiltrados.filter(i => i.nota_reuniao || i.nota);
   document.getElementById('cnt-itens').textContent = `${itensObra.length} itens`;
   if (!itensFiltrados.length) {
     el.innerHTML = `<div class="empty-state">
@@ -127,15 +127,15 @@ function renderizarEstado() {
           item.estado === 'alteracao' ? 'Nota de Alteração' : 'Nota'}
       </div>
       <div class="ec-body">
-        <textarea class="nota-ta" id="nota-ta"
+        <textarea class="nota-ta nota-reuniao" id="nota-ta"
           placeholder="${item.estado === 'extra'
             ? 'Descreve o item extra e o estado do orçamento…'
             : 'Descreve a alteração: dimensões, material, cor, ferragem…'
           }"
-          onblur="guardarNota(this.value)">${item.nota || ''}</textarea>
+          onblur="guardarNota(this.value)">${item.nota_reuniao || item.nota || ''}</textarea>
       </div>
     </div>` : ''}
-    <div class="ec">
+    <div class="ec diretor-only">
       <div class="ec-hdr">Ações Rápidas</div>
       <div class="ec-body">
         <div class="acao-row">
@@ -153,6 +153,7 @@ function renderizarEstado() {
 
 async function definirEstado(novoEstado) {
   if (!itemAtual) return;
+  if (papelAtual !== 'diretor' && papelAtual !== 'gestao') return;
   itemAtual.estado = novoEstado;
   await dbEscrever(db, 'itens', itemAtual);
   await carregarItens();
@@ -166,7 +167,8 @@ async function definirEstado(novoEstado) {
 
 async function guardarNota(texto) {
   if (!itemAtual) return;
-  itemAtual.nota = texto;
+  if (papelAtual !== 'diretor' && papelAtual !== 'gestao') return;
+  itemAtual.nota_reuniao = texto;
   await dbEscrever(db, 'itens', itemAtual);
   mostrarToast('✓ Guardado');
 }
@@ -232,7 +234,7 @@ function atualizarSummary() {
   const cont = { pendente: 0, conferido: 0, alteracao: 0, anulado: 0, extra: 0 };
   itensObra.forEach(i => { if (cont[i.estado] !== undefined) cont[i.estado]++; });
   const total = itensObra.length;
-  const comNota = itensObra.filter(i => i.nota).length;
+  const comNota = itensObra.filter(i => i.nota_reuniao || i.nota).length;
 
   document.getElementById('s-pend').textContent = cont.pendente;
   document.getElementById('s-conf').textContent = cont.conferido;

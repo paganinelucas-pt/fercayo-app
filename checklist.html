@@ -6,8 +6,34 @@
   <title>Fercayo · Checklist ORC</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/checklist.css">
+  <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
+
+  <!-- ── LOGIN OVERLAY ──────────────────────────────────────────── -->
+  <div id="login-overlay" style="display:flex">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-text">FERCAYO</div>
+        <div class="logo-sub">CARPINTARIAS</div>
+      </div>
+      <div class="login-title">Acesso à Aplicação</div>
+      <div class="login-field">
+        <div class="mlabel">Email</div>
+        <input class="minp" id="login-email" type="email" placeholder="email@fercayo.pt"
+          onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+      </div>
+      <div class="login-field">
+        <div class="mlabel">Password</div>
+        <input class="minp" id="login-pass" type="password" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')fazerLogin()">
+      </div>
+      <div id="login-err" class="login-err"></div>
+      <button class="btn btn-gold" id="login-btn" onclick="fazerLogin()" style="width:100%;justify-content:center">Entrar</button>
+    </div>
+  </div>
+
+  <div id="app-root" style="display:none">
 
   <div id="topbar">
     <div class="logo">
@@ -21,9 +47,10 @@
 
     <div id="breadcrumb"><span>Checklist de Orçamentos</span></div>
 
-    <div class="sector-sw">
-      <span class="sector-btn active">Checklist</span>
-      <a class="sector-btn" href="levantamento.html">Levantamento</a>
+    <div class="user-info">
+      <span id="user-badge" class="user-badge">—</span>
+      <span id="user-email"></span>
+      <button class="btn btn-out btn-sm" onclick="fazerLogout()">Sair</button>
     </div>
 
   </div>
@@ -34,13 +61,13 @@
       <button class="nav-btn active" onclick="mostrarPainel('checklist')" data-p="checklist">
         ☑<span class="tip">Checklist</span>
       </button>
-      <button class="nav-btn" onclick="abrirAta()" data-p="ata">
+      <button class="nav-btn diretor-only" onclick="abrirAta()" data-p="ata">
         📄<span class="tip">Ata de Reunião</span>
       </button>
-      <button class="nav-btn" onclick="mostrarPainel('extrator')" data-p="extrator">
+      <button class="nav-btn diretor-only" onclick="mostrarPainel('extrator')" data-p="extrator">
         ⬆<span class="tip">Importar Itens</span>
       </button>
-      <button class="nav-btn" onclick="abrirModal()" data-p="nova">
+      <button class="nav-btn diretor-only" onclick="abrirModal()" data-p="nova">
         ＋<span class="tip">Nova Obra</span>
       </button>
     </div>
@@ -398,16 +425,16 @@
     </div>
   </div>
 
+  <div id="toast"></div>
+  </div><!-- /app-root -->
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <!-- Shared -->
   <script src="js/shared/db.js"></script>
-  <!-- Data -->
-  <script src="js/data/obras-default.js"></script>
-  <script src="js/data/seed-283-26.js"></script>
-  <script src="js/data/seed-301-26.js"></script>
-  <script src="js/data/seed-286-26.js"></script>
+  <script src="js/shared/auth.js"></script>
   <!-- Checklist modules (ordem de dependência) -->
   <script src="js/checklist/state.js"></script>
   <script src="js/checklist/obras.js"></script>
@@ -416,6 +443,5 @@
   <script src="js/checklist/ata.js"></script>
   <script src="js/checklist/db-init.js"></script>
   <script src="js/checklist/app.js"></script>
-  <div id="toast"></div>
 </body>
 </html>

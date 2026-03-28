@@ -114,7 +114,7 @@ function atualizarPreviewAta() {
   /* filter items */
   let itens = [...(itensObra || [])];
   itens = itens.filter(i => ataEstados.has(i.estado));
-  if (ataApenasComNotas) itens = itens.filter(i => i.nota);
+  if (ataApenasComNotas) itens = itens.filter(i => i.nota_reuniao || i.nota);
 
   const estadoLabel = {
     pendente:  '○ Pendente',
@@ -162,8 +162,8 @@ function atualizarPreviewAta() {
             ${estadoLabel[item.estado] || item.estado}
           </div>
         </div>
-        ${item.nota
-          ? `<div class="ata-item-nota">${item.nota}</div>`
+        ${(item.nota_reuniao || item.nota)
+          ? `<div class="ata-item-nota">${item.nota_reuniao || item.nota}</div>`
           : ''}
       `).join('')
     : '<div style="color:#aaa;font-size:11px;padding:8px 0">Sem itens carregados</div>';
