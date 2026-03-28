@@ -15,14 +15,14 @@ body {
 
 #topbar {
   height: 56px;
-  background: #FFFFFF;
-  border-bottom: 1px solid #E0DDD8;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   padding: 0 20px;
   gap: 14px;
   flex-shrink: 0;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
 }
 
 .logo {
@@ -52,7 +52,7 @@ body {
 .topbar-sep {
   width: 1px;
   height: 24px;
-  background: #D8D4CC;
+  background: var(--border2);
 }
 
 /* Logo completo (JPG) no topbar — crop para mostrar só a zona do logo */

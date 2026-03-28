@@ -11,7 +11,15 @@
       "Bash(gh pr:*)",
       "Bash(find /c/projetos/fercayo-app/.claude/worktrees/heuristic-wilbur -type f \\\\\\(-name *logo* -o -name *brand* -o -name *theme* -o -name *color* -o -name *style* \\\\\\))",
       "mcp__Claude_Preview__preview_start",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/assets/logo-full.jpg)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/assets/logo-full.jpg)",
+      "Bash(gh api:*)",
+      "Bash(gh run:*)",
+      "Bash(vercel ls:*)",
+      "Bash(vercel --prod --yes)",
+      "Bash(cp \"C:/projetos/fercayo-app/.claude/worktrees/heuristic-wilbur/css/checklist.css\" \"C:/projetos/fercayo-app/css/checklist.css\")",
+      "Bash(cp \"C:/projetos/fercayo-app/.claude/worktrees/heuristic-wilbur/css/auth.css\" \"C:/projetos/fercayo-app/css/auth.css\")",
+      "Bash(cp \"C:/projetos/fercayo-app/.claude/worktrees/heuristic-wilbur/checklist.html\" \"C:/projetos/fercayo-app/checklist.html\")",
+      "Bash(cp \"C:/projetos/fercayo-app/.claude/worktrees/heuristic-wilbur/assets/logo-full.jpg\" \"C:/projetos/fercayo-app/assets/logo-full.jpg\")"
     ]
   }
 }

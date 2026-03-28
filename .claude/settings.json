@@ -22,7 +22,8 @@
       "Bash(find /c/projetos/fercayo-app -type f -not -path */.agent/*)",
       "Bash(find /c/projetos/fercayo-app -not -path \"*/.agent/*\" -not -path \"*/.git/*\" -type f -exec ls -lh {})",
       "Read(//c/projetos/fercayo-app/{print $5 \"\"\"\"\"\"\"\"/**)",
-      "Bash(sort -k2)"
+      "Bash(sort -k2)",
+      "mcp__claude_ai_Gmail__gmail_get_profile"
     ]
   }
 }
