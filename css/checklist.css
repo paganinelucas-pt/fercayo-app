@@ -30,6 +30,10 @@ body {
   align-items: center;
   gap: 10px;
   cursor: default;
+  background: #fff;
+  border-radius: 8px;
+  padding: 2px 8px;
+  overflow: hidden;
 }
 .logo-icon {
   width: 28px;
