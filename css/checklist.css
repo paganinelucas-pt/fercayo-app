@@ -32,8 +32,9 @@ body {
   cursor: default;
   background: #fff;
   border-radius: 8px;
-  padding: 2px 8px;
+  padding: 4px 10px;
   overflow: hidden;
+  height: 40px;
 }
 .logo-icon {
   width: 28px;
@@ -61,12 +62,11 @@ body {
 
 /* Logo completo (JPG) no topbar — crop para mostrar só a zona do logo */
 .logo-full-img {
-  height: 80px;
-  width: 280px;
+  height: 44px;
+  width: 160px;
   object-fit: cover;
   object-position: center 45%;
   display: block;
-  margin: -22px 0;
 }
 
 /* Logo completo no login */
@@ -110,7 +110,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 12px 0;
-  gap: 4px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -950,7 +950,24 @@ mark {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #c8c8c8;
+  background: var(--bg);
+  position: relative;
+}
+.ata-preview-col::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent 0px,
+    transparent 22px,
+    rgba(175, 124, 52, 0.055) 22px,
+    rgba(175, 124, 52, 0.055) 23px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 .ata-preview-hdr {
   background: var(--bg3);
@@ -967,18 +984,22 @@ mark {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 20px;
+  padding: 32px 40px;
+  position: relative;
+  z-index: 1;
 }
 
 /* A4 page */
 .ata-page {
-  max-width: 680px;
+  max-width: 860px;
+  width: 100%;
   margin: 0 auto;
   background: #fff;
-  padding: 40px 50px;
+  padding: 48px 60px;
   color: #222;
   font-family: 'Calibri', 'Inter', sans-serif;
-  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+  box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  border-radius: 2px;
 }
 /* Cabeçalho estilo ORC */
 .ata-cabecalho {
