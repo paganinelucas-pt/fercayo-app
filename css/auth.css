@@ -11,6 +11,15 @@
 }
 
 /* ── Login Overlay ────────────────────────────────────────────── */
+@keyframes diagonalSlide {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(80px, 80px); }
+}
+@keyframes loginBoxEntry {
+  from { opacity: 0; transform: translateY(24px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
 #login-overlay {
   position: fixed;
   inset: 0;
@@ -18,22 +27,49 @@
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  overflow: hidden;
+}
+
+/* Motivo de linhas diagonais — inspirado na capa do manual de normas */
+#login-overlay::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent 0px,
+    transparent 22px,
+    rgba(175, 124, 52, 0.055) 22px,
+    rgba(175, 124, 52, 0.055) 23px
+  );
+  animation: diagonalSlide 18s linear infinite;
+  pointer-events: none;
 }
 
 .login-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 36px 32px;
-  width: 340px;
+  background: #FFFFFF;
+  border: 1px solid #E0DDD8;
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 380px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.45), 0 0 0 1px rgba(175,124,52,.06);
+  position: relative;
+  z-index: 1;
+  animation: loginBoxEntry .5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   margin-bottom: 4px;
+  gap: 6px;
 }
 
 .login-logo .logo-text {
@@ -52,7 +88,7 @@
 
 .login-title {
   font-size: 11px;
-  color: var(--text3);
+  color: #6A7079;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -70,6 +106,16 @@
   min-height: 14px;
   text-align: center;
 }
+
+/* inputs no card branco */
+.login-box .minp {
+  background: #F5F4F2;
+  border: 1px solid #D8D4CC;
+  color: #1C2630;
+}
+.login-box .minp:focus { border-color: var(--gold); }
+.login-box .minp::placeholder { color: #A4A9AD; }
+.login-box .mlabel { color: #6A7079; }
 
 /* ── User Info (topbar) ──────────────────────────────────────── */
 .user-info {

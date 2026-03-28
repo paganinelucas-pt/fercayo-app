@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fercayo · Checklist ORC</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/checklist.css">
   <link rel="stylesheet" href="css/auth.css">
 </head>
@@ -14,8 +13,7 @@
   <div id="login-overlay" style="display:flex">
     <div class="login-box">
       <div class="login-logo">
-        <div class="logo-text">FERCAYO</div>
-        <div class="logo-sub">CARPINTARIAS</div>
+        <img src="assets/logo-full.jpg" alt="Fercayo" class="login-logo-full">
       </div>
       <div class="login-title">Acesso à Aplicação</div>
       <div class="login-field">
@@ -37,10 +35,7 @@
 
   <div id="topbar">
     <div class="logo">
-      <div>
-        <div class="logo-text">FERCAYO</div>
-        <div class="logo-sub">CARPINTARIAS</div>
-      </div>
+      <img src="assets/logo-full.jpg" alt="Fercayo" class="logo-full-img">
     </div>
 
     <div class="topbar-sep"></div>
@@ -59,16 +54,16 @@
 
     <div id="nav">
       <button class="nav-btn active" onclick="mostrarPainel('checklist')" data-p="checklist">
-        ☑<span class="tip">Checklist</span>
+        <i data-lucide="list-checks"></i><span class="tip">Checklist</span>
       </button>
       <button class="nav-btn diretor-only" onclick="abrirAta()" data-p="ata">
-        📄<span class="tip">Ata de Reunião</span>
+        <i data-lucide="file-text"></i><span class="tip">Ata de Reunião</span>
       </button>
       <button class="nav-btn diretor-only" onclick="mostrarPainel('extrator')" data-p="extrator">
-        ⬆<span class="tip">Importar Itens</span>
+        <i data-lucide="upload"></i><span class="tip">Importar Itens</span>
       </button>
       <button class="nav-btn diretor-only" onclick="abrirModal()" data-p="nova">
-        ＋<span class="tip">Nova Obra</span>
+        <i data-lucide="plus"></i><span class="tip">Nova Obra</span>
       </button>
     </div>
 
@@ -428,6 +423,8 @@
   <div id="toast"></div>
   </div><!-- /app-root -->
 
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -443,5 +440,6 @@
   <script src="js/checklist/ata.js"></script>
   <script src="js/checklist/db-init.js"></script>
   <script src="js/checklist/app.js"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
