@@ -1140,8 +1140,16 @@ mark {
   }
   .ata-page {
     box-shadow: none !important;
-    padding: 0 !important;
+    padding: 1.5cm !important;
     max-width: none !important;
   }
-  @page { size: A4; margin: 1.5cm; }
+  /* Número de página no rodapé do documento */
+  .ata-rodape::after {
+    content: "Pág. " counter(page);
+    margin-left: auto;
+    font-size: 7.5px;
+    color: #6A7079;
+  }
+  /* margin:0 elimina cabeçalho/rodapé nativos do browser (URL, data, título) */
+  @page { size: A4; margin: 0; }
 }
