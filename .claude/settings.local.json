@@ -4,7 +4,14 @@
       "Bash(wc -l \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app/css\"/*.css)",
       "Bash(grep -l \"href=\"\"css/\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app\"/*.html)",
       "Bash(grep -E \"@import|href.*theme\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app/css/\"*.css)",
-      "Bash(grep -c \"src=\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app\"/*.html)"
+      "Bash(grep -c \"src=\" \"/c/Users/Lucas/OneDrive/Área de Trabalho/fercayo-app\"/*.html)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr:*)",
+      "Bash(find /c/projetos/fercayo-app/.claude/worktrees/heuristic-wilbur -type f \\\\\\(-name *logo* -o -name *brand* -o -name *theme* -o -name *color* -o -name *style* \\\\\\))",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/assets/logo-full.jpg)"
     ]
   }
 }
