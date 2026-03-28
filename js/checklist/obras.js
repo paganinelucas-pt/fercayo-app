@@ -48,7 +48,6 @@ async function selecionarObra(id) {
   document.getElementById('breadcrumb').innerHTML =
     `<span>${obraAtual.codigo}</span> › ${obraAtual.nome}`;
   document.getElementById('add-row').style.display = 'flex';
-  document.getElementById('obra-tabs').style.display = 'flex';
   await carregarItens();
   renderizarEstadoVazio();
   renderizarObras(document.getElementById('search-obras').value);

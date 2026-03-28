@@ -1,6 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
    Fercayo · Autenticação Firebase
-   Usado por: checklist.html, levantamento.html, consulta.html
    ═══════════════════════════════════════════════════════════════ */
 
 let papelAtual       = null;
@@ -42,15 +41,6 @@ function _aplicarPermissoes(papel) {
   const emailEl = document.getElementById('user-email');
   if (emailEl && utilizadorAtual) emailEl.textContent = utilizadorAtual.email;
 
-  /* Preparador só tem acesso à Aba C · Consulta */
-  if (papel === 'preparador') {
-    const naConsulta = window.location.pathname.includes('consulta');
-    if (!naConsulta) {
-      window.location.href = 'consulta.html';
-      return true;
-    }
-    return false; /* deixa passar em consulta.html */
-  }
   return false;
 }
 

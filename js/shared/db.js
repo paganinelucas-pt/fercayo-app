@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    Fercayo · Camada Firebase Firestore Partilhada
-   Usado por: checklist.html, levantamento.html
+   Usado por: checklist.html
    ═══════════════════════════════════════════════════════════════ */
 
 const FIREBASE_CONFIG = {
